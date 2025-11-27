@@ -1,0 +1,20 @@
+<div style="padding: 20px;">
+  <h1>Probando Conexión Frontend - Backend</h1>
+
+  <div *ngIf="mensajeError" style="color: red; border: 1px solid red; padding: 10px;">
+    {{ mensajeError }}
+  </div>
+
+  <div *ngIf="productos.length > 0">
+    <h2>Catálogo:</h2>
+    <ul>
+      <li *ngFor="let prod of productos">
+        <strong>{{ prod.nombre }}</strong> - ${{ prod.precio }}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="productos.length === 0 && !mensajeError">
+    <p>Cargando datos o no hay productos en la base de datos...</p>
+  </div>
+</div>
