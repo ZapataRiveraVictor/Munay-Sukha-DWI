@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // CRUCIAL para directivas básicas
+import { CommonModule } from '@angular/common'; 
 import { ProductService, Producto } from '../../services/product';
 
 @Component({
@@ -9,7 +9,7 @@ import { ProductService, Producto } from '../../services/product';
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
-export class HomeComponent implements OnInit {
+export class Home implements OnInit {
   
   productos: Producto[] = [];
   mensajeError: string = '';
@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    // Al iniciar, pedimos los datos al backend
     this.productService.getAllProductos().subscribe({
       next: (data) => {
         this.productos = data;
