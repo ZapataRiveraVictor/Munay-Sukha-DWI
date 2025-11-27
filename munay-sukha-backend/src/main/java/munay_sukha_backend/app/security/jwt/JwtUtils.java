@@ -17,7 +17,7 @@ public class JwtUtils {
 
     // 1. Usar una clave Base64 fija y válida (más de 256 bits)
     // Esta cadena es "SecretKeyParaMunaySukhaTieneQueSerLargaYSegura123" en Base64
-    private final String jwtSecret = "U2VjcmV0S2V5UGFyYU11bmF5U3VraGFUaWVuZVF1ZVNlckxhcmdhWVNlZ3VyYTEyMw=="; 
+    private final String jwtSecret = "Tm9UZU9sdmlkZXNEZUNhbWJpYXJFc3RhQ2xhdmVQb3JVbmFTZWd1cmFFbkJhc2U2NA==";
 
     private final int jwtExpirationMs = 86400000;
 

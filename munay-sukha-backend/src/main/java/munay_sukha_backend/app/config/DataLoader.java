@@ -9,7 +9,6 @@ import munay_sukha_backend.app.repository.RoleRepository;
 import munay_sukha_backend.app.repository.UsuarioRepository;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Component
 public class DataLoader implements CommandLineRunner {

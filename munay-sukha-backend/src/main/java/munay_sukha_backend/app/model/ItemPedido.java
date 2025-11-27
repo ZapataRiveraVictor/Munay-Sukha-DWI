@@ -1,5 +1,7 @@
 package munay_sukha_backend.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,6 +16,7 @@ public class ItemPedido {
     // Relación Muchos a Uno: Un ítem pertenece a un solo pedido
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
+    @JsonIgnore
     private Pedido pedido;
 
     // El producto que se compró (Relación con Producto)

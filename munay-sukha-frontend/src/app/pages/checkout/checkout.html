@@ -1,0 +1,28 @@
+<div class="checkout-container">
+    <h2>Finalizar Compra</h2>
+
+    <div class="summary">
+        <h3>Total a Pagar: S/. {{ total }}</h3>
+    </div>
+
+    <form [formGroup]="checkoutForm" (ngSubmit)="confirmarCompra()">
+
+        <div class="form-group">
+            <label>Dirección de Envío</label>
+            <input type="text" formControlName="direccion" placeholder="Av. Principal 123">
+        </div>
+
+        <div class="form-group">
+            <label>Ciudad</label>
+            <input type="text" formControlName="ciudad" placeholder="Lima">
+        </div>
+
+        <div *ngIf="mensaje" class="success-msg">
+            {{ mensaje }}
+        </div>
+
+        <button type="submit" [disabled]="checkoutForm.invalid || cargando" class="btn-pay">
+            {{ cargando ? 'Procesando...' : 'Pagar Ahora' }}
+        </button>
+    </form>
+</div>

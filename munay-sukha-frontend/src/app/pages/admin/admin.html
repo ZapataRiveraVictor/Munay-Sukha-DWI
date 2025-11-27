@@ -1,0 +1,35 @@
+<div class="admin-container">
+    <h1>Panel de Administración</h1>
+    <h2>Pedidos Recientes</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Detalles</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of pedidos">
+                <td>#{{ p.id }}</td>
+                <td>{{ p.fechaCreacion | date:'short' }}</td>
+                <td>{{ p.usuario?.nombreCompleto || p.usuario?.email }}</td>
+                <td class="price">S/. {{ p.total }}</td>
+                <td>
+                    <span class="badge" [ngClass]="p.estado">{{ p.estado }}</span>
+                </td>
+                <td>
+                    <button class="btn-view">Ver Items</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="pedidos.length === 0">
+        <p>No hay pedidos registrados aún.</p>
+    </div>
+</div>

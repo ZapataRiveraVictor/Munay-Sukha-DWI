@@ -4,9 +4,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import munay_sukha_backend.app.dto.ItemRequest;
+import munay_sukha_backend.app.dto.PedidoRequest;
 import munay_sukha_backend.app.model.*;
 import munay_sukha_backend.app.repository.UsuarioRepository;
 import munay_sukha_backend.app.service.PedidoService;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,19 +28,39 @@ public class PedidoController {
 
     // POST: /api/pedidos/checkout (RUTA PROTEGIDA: Solo usuarios autenticados)
     @PostMapping("/checkout")
-    public ResponseEntity<?> realizarCheckout(@RequestBody Pedido pedido,
+    public ResponseEntity<?> realizarCheckout(@RequestBody PedidoRequest pedidoRequest, // <-- Cambiado a DTO
             @AuthenticationPrincipal UserDetails userDetails) {
         try {
-            // Obtener el objeto Usuario completo a partir del email autenticado (principal)
             Usuario usuario = usuarioRepository.findByEmail(userDetails.getUsername())
-                    .orElseThrow(() -> new Exception("Usuario no encontrado en la base de datos."));
+                    .orElseThrow(() -> new Exception("Usuario no encontrado"));
 
-            // El cuerpo de la petición debe incluir los ítems del carrito
-            Pedido nuevoPedido = pedidoService.crearPedido(usuario, pedido, pedido.getItems());
-            return ResponseEntity.ok(nuevoPedido);
+            // 1. Convertir DTO a Entidad Pedido
+            Pedido nuevoPedido = new Pedido();
+            nuevoPedido.setDireccionEnvio(pedidoRequest.getDireccionEnvio());
+            nuevoPedido.setCiudad(pedidoRequest.getCiudad());
+            nuevoPedido.setTotal(pedidoRequest.getTotal());
+
+            // 2. Convertir lista de Items DTO a Entidades ItemPedido
+            List<ItemPedido> items = new ArrayList<>();
+            for (ItemRequest itemReq : pedidoRequest.getItems()) {
+                // Buscamos el producto por ID (necesitamos el repositorio o crearlo vacío con
+                // ID)
+                Producto p = new Producto();
+                p.setId(itemReq.getProductoId()); // Hibernate lo buscará por ID luego
+
+                ItemPedido item = new ItemPedido();
+                item.setProducto(p);
+                item.setCantidad(itemReq.getCantidad());
+                items.add(item);
+            }
+
+            // 3. Llamar al servicio
+            Pedido pedidoGuardado = pedidoService.crearPedido(usuario, nuevoPedido, items);
+            return ResponseEntity.ok(pedidoGuardado);
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al procesar el pedido: " + e.getMessage());
+            e.printStackTrace(); // Imprimir error en consola para ver qué pasa
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 

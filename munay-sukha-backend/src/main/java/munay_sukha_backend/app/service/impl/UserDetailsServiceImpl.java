@@ -1,6 +1,5 @@
 package munay_sukha_backend.app.service.impl;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import munay_sukha_backend.app.model.Usuario;
 import munay_sukha_backend.app.repository.UsuarioRepository;
-import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
