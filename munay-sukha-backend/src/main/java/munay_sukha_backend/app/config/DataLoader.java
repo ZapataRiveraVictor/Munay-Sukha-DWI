@@ -1,4 +1,4 @@
-package munay_sukha_backend.app.config; // <--- Asegúrate que coincida con tu paquete
+package munay_sukha_backend.app.config;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +17,8 @@ public class DataLoader implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public DataLoader(UsuarioRepository usuarioRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public DataLoader(UsuarioRepository usuarioRepository, RoleRepository roleRepository,
+            PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -29,20 +30,36 @@ public class DataLoader implements CommandLineRunner {
         crearRolSiNoExiste("ROLE_ADMIN");
         crearRolSiNoExiste("ROLE_CLIENTE");
 
-        // 2. Crear Usuario de Prueba si no existe
-        if (!usuarioRepository.existsByEmail("cliente@munay.com")) {
-            Usuario usuario = new Usuario();
-            usuario.setNombreCompleto("Cliente Test");
-            usuario.setEmail("cliente@munay.com");
-            // ¡Aquí Spring encripta la contraseña automáticamente!
-            usuario.setPassword(passwordEncoder.encode("password123")); 
-            
-            // Asignar rol
-            Role rolCliente = roleRepository.findByNombre("ROLE_CLIENTE").get();
-            usuario.setRoles(Collections.singleton(rolCliente));
+        // 2. CREAR SUPER ADMIN (Si no existe)
+        if (!usuarioRepository.existsByEmail("admin@munay.com")) {
+            Usuario admin = new Usuario();
+            admin.setNombreCompleto("Super Administrador");
+            admin.setEmail("admin@munay.com");
+            // Aquí definimos la contraseña del admin: "admin123"
+            admin.setPassword(passwordEncoder.encode("admin123"));
 
-            usuarioRepository.save(usuario);
-            System.out.println(">>> Usuario de prueba creado: cliente@munay.com / password123");
+            // Asignar rol de ADMIN
+            Role rolAdmin = roleRepository.findByNombre("ROLE_ADMIN")
+                    .orElseThrow(() -> new RuntimeException("Error: Rol no encontrado"));
+
+            admin.setRoles(Collections.singleton(rolAdmin));
+
+            usuarioRepository.save(admin);
+            System.out.println(">>> SUPER ADMIN CREADO: admin@munay.com / admin123");
+        }
+
+        // 3. CREAR CLIENTE DE PRUEBA (Opcional, para tus tests rápidos)
+        if (!usuarioRepository.existsByEmail("cliente@munay.com")) {
+            Usuario cliente = new Usuario();
+            cliente.setNombreCompleto("Cliente Test");
+            cliente.setEmail("cliente@munay.com");
+            cliente.setPassword(passwordEncoder.encode("password123"));
+
+            Role rolCliente = roleRepository.findByNombre("ROLE_CLIENTE").get();
+            cliente.setRoles(Collections.singleton(rolCliente));
+
+            usuarioRepository.save(cliente);
+            System.out.println(">>> 👤 Cliente Test Creado: cliente@munay.com / password123");
         }
     }
 

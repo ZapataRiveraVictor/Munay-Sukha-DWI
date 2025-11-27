@@ -50,31 +50,30 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegistroRequest registroRequest) {
+        
+        // 1. VALIDACIÓN: Email Único
         if (usuarioRepository.existsByEmail(registroRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: ¡El correo ya está registrado!");
         }
+
+        // 2. Crear Usuario
         Usuario usuario = new Usuario();
         usuario.setNombreCompleto(registroRequest.getNombreCompleto());
         usuario.setEmail(registroRequest.getEmail());
-
         usuario.setPassword(passwordEncoder.encode(registroRequest.getPassword()));
 
-        Optional<Role> clienteRole = roleRepository.findByNombre("ROLE_CLIENTE");
-        if (clienteRole.isEmpty()) {
-
-            Role defaultRole = new Role();
-            defaultRole.setNombre("ROLE_CLIENTE");
-            roleRepository.save(defaultRole);
-            usuario.setRoles(Collections.singleton(defaultRole));
-        } else {
-            usuario.setRoles(Collections.singleton(clienteRole.get()));
-        }
+        // 3. LÓGICA: Asignar Rol de CLIENTE Automáticamente
+        // Buscamos el rol en la DB, si no existe (raro), lanzamos error o creamos uno por defecto
+        Role rolCliente = roleRepository.findByNombre("ROLE_CLIENTE")
+                .orElseThrow(() -> new RuntimeException("Error: Rol de Cliente no encontrado."));
+        
+        usuario.setRoles(Collections.singleton(rolCliente));
 
         usuarioRepository.save(usuario);
 
-        return ResponseEntity.ok("Usuario registrado exitosamente. Ahora puede iniciar sesión.");
+        return ResponseEntity.ok("Usuario registrado exitosamente.");
     }
 
 }

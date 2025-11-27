@@ -58,3 +58,23 @@
         text-align: center;
     }
 }
+
+/* ... tus estilos anteriores ... */
+
+.register-link {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+
+    a {
+        color: #2e7d32;
+        /* Verde Munay */
+        font-weight: bold;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
