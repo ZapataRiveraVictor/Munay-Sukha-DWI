@@ -1,14 +1,12 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router'; 
-import { CommonModule } from '@angular/common';
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet], 
-  template: '<router-outlet></router-outlet>', // Solo necesitamos el router outlet para renderizar las rutas
-  styleUrls: ['./app.scss']
+  imports: [RouterOutlet],
+  templateUrl: './app.html',
+  styleUrl: './app.scss'
 })
-export class App { 
-  
+export class App {
+  protected readonly title = signal('munay-sukha-frontend');
 }

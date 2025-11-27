@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "munay-sukha-web": {
+    "munay-sukha-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -59,15 +59,12 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {
-            "proxyConfig": "proxy.conf.json"
-          },
           "configurations": {
             "production": {
-              "buildTarget": "munay-sukha-web:build:production"
+              "buildTarget": "munay-sukha-frontend:build:production"
             },
             "development": {
-              "buildTarget": "munay-sukha-web:build:development"
+              "buildTarget": "munay-sukha-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
