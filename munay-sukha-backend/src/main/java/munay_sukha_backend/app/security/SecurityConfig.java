@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import munay_sukha_backend.app.security.jwt.AuthTokenFilter;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -31,13 +33,18 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // Deshabilita CSRF (típico en API REST sin sesiones)
                 .csrf(AbstractHttpConfigurer::disable)
                 // Configura que Spring no use sesiones de estado (stateless)
                 .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Define las reglas de acceso a las rutas:
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas: login, registro y el catálogo
@@ -49,7 +56,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated());
 
         // Aquí se añadiría la lógica JWT (que haremos en pasos posteriores con filtros)
-
+        
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        
         return http.build();
     }
 
@@ -65,4 +74,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
 }

@@ -19,10 +19,33 @@ public class JwtUtils {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername())) 
+                .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+    }
+
+    public String getUserNameFromJwtToken(String token) {
+        // Obtiene el "subject" (que definimos como el email) del token
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public boolean validateJwtToken(String authToken) {
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            return true;
+        } catch (SignatureException e) {
+            // Log: Firma inválida
+        } catch (MalformedJwtException e) {
+            // Log: Token inválido
+        } catch (ExpiredJwtException e) {
+            // Log: Token expirado
+        } catch (UnsupportedJwtException e) {
+            // Log: Token no soportado
+        } catch (IllegalArgumentException e) {
+            // Log: Cadena de JWT vacía
+        }
+        return false;
     }
 }
