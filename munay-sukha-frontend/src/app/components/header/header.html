@@ -1,0 +1,27 @@
+<header class="site-header">
+    <div class="container">
+
+        <a routerLink="/" class="logo">
+            <span class="munay">Munay</span> & <span class="sukha">Sukha</span>
+        </a>
+
+        <nav>
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+            <a routerLink="/catalogo" routerLinkActive="active">Catálogo</a>
+
+            <a routerLink="/carrito" routerLinkActive="active" class="cart-link">
+                🛒 Carrito <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+            </a>
+
+            <ng-container *ngIf="isLoggedIn; else loginBtn">
+                <span class="user-welcome">Hola, {{ userEmail }}</span>
+                <button (click)="logout()" class="btn-logout">Salir</button>
+            </ng-container>
+
+            <ng-template #loginBtn>
+                <a routerLink="/login" class="btn-login">Ingresar</a>
+            </ng-template>
+        </nav>
+
+    </div>
+</header>
