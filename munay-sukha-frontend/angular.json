@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "munay-sukha-web:build:production"
+              "buildTarget": "munay-sukha-frontend:build:production"
             },
             "development": {
-              "buildTarget": "munay-sukha-web:build:development"
+              "buildTarget": "munay-sukha-frontend:build:development"
             }
           },
           "defaultConfiguration": "development",

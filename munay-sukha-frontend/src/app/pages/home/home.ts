@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
-import { ProductService, Producto } from '../../services/product';
+import { CommonModule } from '@angular/common';
+import { ProductService, Producto } from '../../services/product'; // Revisa que la ruta sea correcta según tus carpetas
 
 @Component({
   selector: 'app-home',
-  standalone: true, // Esto indica que es moderno
-  imports: [CommonModule], // Importamos las herramientas básicas aquí
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
-export class Home implements OnInit {
-  
+export class Home implements OnInit { // El error dice que tu clase se llama 'Home'
+
   productos: Producto[] = [];
-  mensajeError: string = '';
+  
+  // ¡ESTA ES LA LÍNEA QUE FALTA! 
+  errorMensaje: string = ''; 
 
   constructor(private productService: ProductService) {}
 
@@ -22,9 +24,10 @@ export class Home implements OnInit {
         this.productos = data;
         console.log('Productos cargados:', data);
       },
-      error: (error) => {
-        console.error('Error conectando al backend:', error);
-        this.mensajeError = 'No se pudo conectar con el Backend (Spring Boot).';
+      error: (err) => {
+        console.error('Error:', err);
+        // Asegúrate de usar 'this.errorMensaje' aquí también
+        this.errorMensaje = 'No se pudo conectar con el Backend.'; 
       }
     });
   }
