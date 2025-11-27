@@ -1,4 +1,4 @@
-package munay_sukha_backend.demo;
+package munay_sukha_backend.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
