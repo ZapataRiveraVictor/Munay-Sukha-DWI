@@ -1,0 +1,33 @@
+<section class="hero">
+    <h2>¡Bienvenidos a Munay & Sukha!</h2>
+    <p>Cuidamos tu salud y tu entorno con productos saludables y artesanales.</p>
+    <div class="cta-buttons">
+        <a routerLink="/catalogo/munay" class="btn btn-munay">Explorar Munay</a>
+        <a routerLink="/catalogo/sukha" class="btn btn-sukha">Explorar Sukha</a>
+    </div>
+</section>
+
+<section class="curiosidades container">
+    <h3>Datos curiosos</h3>
+    <p>La granola artesanal aporta más fibra que la industrial.</p>
+</section>
+
+<section id="productos" class="productos container">
+    <h3>Productos destacados</h3>
+
+    <div *ngIf="loading">Cargando productos del servidor...</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <div *ngIf="!loading && productosDestacados.length > 0" class="products-grid">
+        <div *ngFor="let producto of productosDestacados" class="product-card">
+            <img [src]="producto.urlImagen" [alt]="producto.nombre">
+            <h4>{{ producto.nombre }}</h4>
+            <p class="price">S/. {{ producto.precio | number: '1.2-2' }}</p>
+            <button class="btn btn-add">Agregar al carrito</button>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && productosDestacados.length === 0 && !error">
+        No hay productos destacados disponibles en este momento.
+    </div>
+</section>

@@ -1,23 +1,11 @@
-import { ApplicationConfig, NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-
-import { routes } from './app.routes';
-
+import { provideHttpClient } from '@angular/common/http'; // 1. Habilitar peticiones HTTP
+import { routes } from './app.routes'; 
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
+    provideRouter(routes),
+    provideHttpClient()
   ]
-  
 };
-@NgModule({
-  // ...
-  imports: [
-    // ...
-    HttpClientModule 
-  ],
-  // ...
-})
-export class AppModule { }
