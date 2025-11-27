@@ -9,6 +9,7 @@ import munay_sukha_backend.app.model.Usuario;
 import munay_sukha_backend.app.repository.UsuarioRepository;
 import java.util.stream.Collectors;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
