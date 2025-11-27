@@ -1,49 +1,54 @@
 package munay_sukha_backend.app.security.jwt;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import munay_sukha_backend.app.service.impl.UserDetailsImpl;
 
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtils {
-    private final String jwtSecret = "Tu_Clave_Secreta_Muy_Larga_y_Compleja_aqui";
+
+    // 1. Usar una clave Base64 fija y válida (más de 256 bits)
+    // Esta cadena es "SecretKeyParaMunaySukhaTieneQueSerLargaYSegura123" en Base64
+    private final String jwtSecret = "U2VjcmV0S2V5UGFyYU11bmF5U3VraGFUaWVuZVF1ZVNlckxhcmdhWVNlZ3VyYTEyMw=="; 
+
     private final int jwtExpirationMs = 86400000;
 
-    public String generateJwtToken(Authentication authentication) {
+    // 2. Método para obtener la llave criptográfica correcta
+    private Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
+    public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // Usar la clave decodificada
                 .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
-        // Obtiene el "subject" (que definimos como el email) del token
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(getSignInKey()).build()
+                .parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(authToken);
             return true;
-        } catch (SignatureException e) {
-            // Log: Firma inválida
-        } catch (MalformedJwtException e) {
-            // Log: Token inválido
-        } catch (ExpiredJwtException e) {
-            // Log: Token expirado
-        } catch (UnsupportedJwtException e) {
-            // Log: Token no soportado
-        } catch (IllegalArgumentException e) {
-            // Log: Cadena de JWT vacía
+        } catch (Exception e) {
+            // Loguear el error si es necesario
         }
         return false;
     }

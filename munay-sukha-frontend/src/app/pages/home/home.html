@@ -24,8 +24,7 @@
           <span class="no-stock" *ngIf="p.stock === 0">Agotado</span>
         </div>
 
-        <button class="btn-add" [disabled]="p.stock === 0">
-          Agregar al Carrito
+        <button class="btn-add" [disabled]="p.stock === 0" (click)="agregarAlCarrito(p)"> Agregar al Carrito
         </button>
       </div>
     </div>

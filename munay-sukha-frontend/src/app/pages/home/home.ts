@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductService, Producto } from '../../services/product'; // Revisa que la ruta sea correcta según tus carpetas
+import { ProductService, Producto } from '../../services/product';
+import { CartService } from '../../services/cart'; // Revisa que la ruta sea correcta según tus carpetas
 
 @Component({
   selector: 'app-home',
@@ -12,11 +13,9 @@ import { ProductService, Producto } from '../../services/product'; // Revisa que
 export class Home implements OnInit { // El error dice que tu clase se llama 'Home'
 
   productos: Producto[] = [];
-  
-  // ¡ESTA ES LA LÍNEA QUE FALTA! 
-  errorMensaje: string = ''; 
+  errorMensaje: string = '';
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private cartService: CartService) { }
 
   ngOnInit(): void {
     this.productService.getAllProductos().subscribe({
@@ -27,8 +26,11 @@ export class Home implements OnInit { // El error dice que tu clase se llama 'Ho
       error: (err) => {
         console.error('Error:', err);
         // Asegúrate de usar 'this.errorMensaje' aquí también
-        this.errorMensaje = 'No se pudo conectar con el Backend.'; 
+        this.errorMensaje = 'No se pudo conectar con el Backend.';
       }
     });
+  }
+  agregarAlCarrito(producto: Producto) {
+    this.cartService.addToCart(producto);
   }
 }
