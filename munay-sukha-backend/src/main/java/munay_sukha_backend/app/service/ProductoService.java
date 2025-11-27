@@ -6,7 +6,6 @@ import munay_sukha_backend.app.model.Producto;
 import munay_sukha_backend.app.repository.ProductoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductoService {
