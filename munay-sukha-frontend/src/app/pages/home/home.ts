@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService, Producto } from '../../services/product';
-import { CartService } from '../../services/cart'; // Revisa que la ruta sea correcta según tus carpetas
+import { CartService } from '../../services/cart'; 
 import { ProductDetailComponent } from '../../components/product-detail/product-detail';
 
 @Component({

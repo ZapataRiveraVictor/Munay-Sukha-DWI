@@ -17,7 +17,6 @@ import munay_sukha_backend.app.repository.UsuarioRepository;
 import munay_sukha_backend.app.security.jwt.JwtUtils;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
