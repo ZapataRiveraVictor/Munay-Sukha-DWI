@@ -15,7 +15,9 @@
             <a routerLink="/" (click)="toggleMenu()" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">🏠 Inicio</a>
             <a routerLink="/catalogo" (click)="toggleMenu()" routerLinkActive="active">📋 Catálogo</a>
-
+            <a routerLink="/bienestar" (click)="toggleMenu()" routerLinkActive="active" class="wellness-link">
+                ❤️ Tu Bienestar
+            </a>
             <a *ngIf="isAdmin" routerLink="/admin" (click)="toggleMenu()" routerLinkActive="active" class="admin-link">
                 ⚙️ Panel Admin
             </a>

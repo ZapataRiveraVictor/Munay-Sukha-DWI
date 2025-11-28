@@ -6,6 +6,7 @@ import { CheckoutComponent } from './pages/checkout/checkout';
 import { AdminComponent } from './pages/admin/admin';
 import { RegisterComponent } from './pages/register/register';
 import { CatalogoComponent } from './pages/catalogo/catalogo';
+import { BienestarComponent } from './pages/bienestar/bienestar';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Ruta raíz
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'register', component: RegisterComponent},
   { path: 'catalogo', component: CatalogoComponent },
-  { path: '**', redirectTo: '' } // Cualquier ruta desconocida va al home
+  { path: 'bienestar', component: BienestarComponent},
+  { path: '**', redirectTo: '' } 
 ];

@@ -1,186 +1,234 @@
-// --- Variables de Diseño (Paleta Natural) ---
-$color-munay: #5A7D58; // Verde salvia / naturaleza
-$color-sukha: #C77D63; // Terracota / arcilla / barro
-$color-text: #2C3E50; // Gris oscuro suave (no negro puro)
-$color-bg: #F9FAFB; // Blanco humo para el fondo
-$color-white: #FFFFFF;
-$shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
-$shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.1);
-$radius: 16px;
+/* --- Importación de Fuentes (Google Fonts) --- */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;600;700;800&display=swap');
+
+// --- Variables de Diseño (Paleta Natural Premium) ---
+$color-munay: #4a6b48; // Verde bosque profundo (Más elegante que el salvia puro)
+$color-munay-light: #7a9a78; // Verde suave para hovers
+$color-sukha: #c77d63; // Terracota cálido
+$color-sukha-light: #e09f87; // Terracota suave
+$color-text: #2d3436; // Gris carbón (mejor contraste)
+$color-text-light: #636e72; // Gris medio para descripciones
+$color-bg: #f7f9f7; // Blanco con un tinte imperceptible de verde (frescura)
+$color-white: #ffffff;
+$color-cream: #fdfbf7; // Color crema para fondos alternativos
+
+// Sombras "Glass" y suaves
+$shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+$shadow-hover: 0 20px 50px -12px rgba(46, 125, 50, 0.15);
+$radius: 20px; // Bordes más redondeados (tendencia actual)
 
 // --- Configuración General ---
 :host {
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica', sans-serif; // O usa una fuente como 'Montserrat'
+  font-family: 'Lato', sans-serif;
   color: $color-text;
   display: block;
   background-color: $color-bg;
+  line-height: 1.6;
 }
 
 h1,
 h2,
 h3 {
+  font-family: 'Montserrat', sans-serif; // Fuente de títulos
   margin: 0;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  color: $color-text;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1280px; // Un poco más ancho para pantallas modernas
   margin: 0 auto;
-  padding: 4rem 1.5rem;
+  padding: 5rem 2rem;
 }
 
 .section-title {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   color: $color-munay;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
   position: relative;
+  font-weight: 800;
 
-  // Pequeño adorno debajo del título
+  // Adorno orgánico
   &::after {
     content: '';
     display: block;
-    width: 60px;
-    height: 4px;
-    background-color: $color-sukha;
-    margin: 10px auto 0;
-    border-radius: 2px;
+    width: 80px;
+    height: 5px;
+    background: linear-gradient(90deg, $color-munay, $color-sukha); // Degradado de marca
+    margin: 15px auto 0;
+    border-radius: 10px;
   }
 }
 
-// --- 1. HERO SECTION (Impacto visual limpio) ---
+// --- 1. HERO SECTION (Cinemática) ---
 .hero {
   position: relative;
-  height: 85vh; // Ocupa casi toda la pantalla
+  height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  // Fondo con degradado suave sobre imagen (puedes cambiar la URL)
-  background: linear-gradient(135deg, rgba($color-munay, 0.9), rgba($color-sukha, 0.8)),
+  // Degradado oscuro más sofisticado para mejor lectura
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),
     url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
+  background-attachment: fixed; // Efecto Parallax sutil
   color: $color-white;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
 
   .hero-content {
-    max-width: 700px;
-    animation: fadeInUp 1s ease-out;
+    max-width: 800px;
+    animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1); // Animación más fluida
 
     h1 {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+
+      @media (max-width: 768px) {
+        font-size: 2.8rem;
+      }
     }
 
     p {
-      font-size: 1.25rem;
-      margin-bottom: 2.5rem;
-      opacity: 0.9;
+      font-size: 1.4rem;
+      margin-bottom: 3rem;
+      opacity: 0.95;
       font-weight: 300;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
   }
 
   .hero-buttons {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     justify-content: center;
     flex-wrap: wrap;
 
     .btn {
-      padding: 0.8rem 2rem;
+      padding: 1rem 2.5rem;
       border-radius: 50px;
-      border: none;
-      font-weight: 600;
+      border: 2px solid transparent;
+      font-weight: 700;
       font-size: 1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
 
       &.btn-munay {
-        background-color: $color-white;
-        color: $color-munay;
+        background-color: $color-munay;
+        color: $color-white;
+        border-color: $color-munay;
 
         &:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+          background-color: transparent;
+          color: $color-white;
+          transform: translateY(-4px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
       }
 
       &.btn-sukha {
-        background-color: transparent;
-        border: 2px solid $color-white;
-        color: $color-white;
+        background-color: $color-white;
+        color: $color-text;
 
         &:hover {
-          background-color: $color-white;
-          color: $color-sukha;
-          transform: translateY(-3px);
+          background-color: $color-sukha;
+          color: $color-white;
+          border-color: $color-sukha;
+          transform: translateY(-4px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
       }
     }
   }
 }
 
-// --- 2. CURIOSIDADES (Tarjetas minimalistas) ---
+// --- 2. CURIOSIDADES (Estilo Tarjeta Flotante) ---
 .curiosidades {
-  background-color: $color-white;
+  background-color: $color-cream; // Fondo crema para diferenciar sección
 }
 
 .tips-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
 }
 
 .tip-card {
-  background: $color-bg;
-  padding: 2.5rem;
+  background: $color-white;
+  padding: 3rem 2rem;
   border-radius: $radius;
   text-align: center;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  position: relative;
+  overflow: hidden;
+
+  // Decoración sutil
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: $color-munay;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
 
   &:hover {
-    background: $color-white;
-    box-shadow: $shadow-soft;
-    transform: translateY(-5px);
-    border-color: rgba($color-munay, 0.2);
+    box-shadow: $shadow-hover;
+    transform: translateY(-8px);
+
+    &::before {
+      opacity: 1;
+    }
 
     .icon {
-      transform: scale(1.1) rotate(10deg);
+      transform: scale(1.1);
+      color: $color-munay;
     }
   }
 
   .icon {
-    font-size: 3rem;
+    font-size: 3.5rem;
     display: block;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
+    margin-bottom: 1.5rem;
+    color: $color-sukha; // Icono color tierra
+    transition: all 0.3s ease;
   }
 
   p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: lighten($color-text, 10%);
+    font-size: 1.15rem;
+    color: $color-text-light;
+    font-weight: 400;
   }
 }
 
-// --- 3. PRODUCTOS (Grid limpio) ---
+// --- 3. PRODUCTOS (Estilo E-commerce Moderno) ---
 .products-section {
+  background-color: $color-bg;
+
   .no-products {
     text-align: center;
-    font-size: 1.2rem;
-    color: #999;
-    padding: 3rem;
+    font-size: 1.3rem;
+    color: $color-text-light;
+    padding: 4rem;
+    font-weight: 300;
   }
 }
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 3rem;
 }
 
 .card {
@@ -188,135 +236,153 @@ h3 {
   border-radius: $radius;
   overflow: hidden;
   box-shadow: $shadow-soft;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); // Rebote sutil
   display: flex;
   flex-direction: column;
-  position: relative; // Para los badges
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.02);
 
   &:hover {
     box-shadow: $shadow-hover;
-    transform: translateY(-5px);
+    transform: translateY(-8px);
 
     .card-img img {
-      transform: scale(1.05);
+      transform: scale(1.08);
+    }
+
+    .btn-add {
+      background-color: $color-munay !important; // Fuerza el color al hacer hover en la card
+      color: white !important;
     }
   }
 
-  // Imagen del producto
   .card-img {
-    height: 220px;
+    height: 260px; // Un poco más alto para lucir el producto
     width: 100%;
     overflow: hidden;
     position: relative;
-    background-color: #f0f0f0;
+    background-color: #f4f4f4;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.5s ease;
+      transition: transform 0.6s ease; // Zoom suave
     }
 
-    // Badges (Etiquetas)
-    span[class^="badge-"] {
+    // Badges más elegantes
+    span[class^='badge-'] {
       position: absolute;
       top: 15px;
-      right: 15px;
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
+      left: 15px; // Cambiado a izquierda
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1px;
       color: white;
       text-transform: uppercase;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(4px);
     }
 
     .badge-low-stock {
-      background-color: #F39C12;
+      background: rgba(243, 156, 18, 0.9);
     }
 
     .badge-out-stock {
-      background-color: #E74C3C;
+      background: rgba(231, 76, 60, 0.9);
     }
   }
 
-  // Cuerpo de la tarjeta
   .card-body {
-    padding: 1.5rem;
+    padding: 1.8rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 
     h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
       color: $color-text;
+      font-weight: 700;
     }
 
     .desc {
-      font-size: 0.9rem;
-      color: #7f8c8d;
+      font-size: 0.95rem;
+      color: $color-text-light;
       margin-bottom: 1.5rem;
-      line-height: 1.5;
+      line-height: 1.6;
       display: -webkit-box;
-      -webkit-line-clamp: 3; // Limita a 3 líneas
+      -webkit-line-clamp: 2; // Solo 2 líneas para limpieza
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
   }
 
-  // Pie de la tarjeta (Precio y Botón)
   .card-footer-info {
     margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 
     .row-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
 
       .price {
-        font-size: 1.4rem;
-        font-weight: 700;
+        font-size: 1.6rem;
+        font-weight: 800;
         color: $color-munay;
+        font-family: 'Montserrat', sans-serif;
       }
 
       .stock {
-        font-size: 0.85rem;
-        color: #95a5a6;
+        font-size: 0.8rem;
+        color: $color-text-light;
+        background: #eee;
+        padding: 4px 8px;
+        border-radius: 4px;
       }
     }
 
     .btn-add {
       width: 100%;
-      padding: 0.8rem;
-      background-color: $color-text; // Botón oscuro minimalista
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
+      padding: 1rem;
+      background-color: transparent;
+      color: $color-munay;
+      border: 2px solid $color-munay; // Borde outline
+      border-radius: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: all 0.3s ease;
 
       &:hover:not(:disabled) {
-        background-color: $color-munay; // Cambia a verde al pasar el mouse
+        background-color: $color-munay;
+        color: white;
+        box-shadow: 0 5px 15px rgba($color-munay, 0.3);
       }
 
       &:disabled {
-        background-color: #e0e0e0;
-        color: #a0a0a0;
+        border-color: #e0e0e0;
+        background-color: #f5f5f5;
+        color: #b0b0b0;
         cursor: not-allowed;
+        box-shadow: none;
       }
     }
   }
 }
 
-// --- Animación Simple ---
+// --- Animación de Entrada ---
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
 
   to {
@@ -327,15 +393,32 @@ h3 {
 
 // --- Responsive ---
 @media (max-width: 768px) {
-  .hero {
-    height: 60vh;
+  .section-title {
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+  }
 
-    h1 {
-      font-size: 2.5rem;
+  .hero {
+    height: 70vh; // Menos altura en móviles
+
+    .hero-content {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+      }
     }
   }
 
   .container {
-    padding: 2rem 1rem;
+    padding: 3rem 1.2rem;
   }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  // Una columna en móvil
 }

@@ -1,0 +1,194 @@
+.bienestar-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.header-section {
+    margin-bottom: 40px;
+
+    h1 {
+        color: #2e7d32;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+}
+
+/* Calculadora */
+.calculator-card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: end;
+    flex-wrap: wrap;
+
+    .input-group {
+        text-align: left;
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 150px;
+            font-size: 1rem;
+
+            &:focus {
+                outline: 2px solid #2e7d32;
+                border-color: transparent;
+            }
+        }
+    }
+
+    .btn-calculate {
+        padding: 12px 25px;
+        background-color: #2e7d32;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #1b5e20;
+        }
+    }
+}
+
+/* Resultados */
+.results-section {
+    margin-top: 40px;
+    animation: fadeIn 0.5s ease;
+
+    .score-card {
+        background: #f1f8e9;
+        /* Fondo verdoso muy suave */
+        padding: 30px;
+        border-radius: 16px;
+        margin-bottom: 40px;
+
+        h3 {
+            margin: 0;
+            color: #555;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin: 10px 0;
+            font-weight: 800;
+        }
+
+        .diet-tip {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+    }
+}
+
+/* Grid de Sugerencias */
+.suggestions {
+    h3 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        text-align: left;
+
+        .card-img {
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f9f9f9;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .card-body {
+            padding: 15px;
+
+            h4 {
+                margin: 0 0 10px;
+                font-size: 1rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .price {
+                    font-weight: bold;
+                    color: #2e7d32;
+                }
+
+                .btn-add {
+                    background: #2e7d32;
+                    color: white;
+                    border: none;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    font-size: 1.2rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #1b5e20;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
