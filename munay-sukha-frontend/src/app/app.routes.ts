@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
-import { Login } from './pages/login/login';
+import { HomeComponent } from './pages/home/home';
+import { LoginComponent } from './pages/login/login';
 import { CartComponent } from './pages/cart/cart';
 import { CheckoutComponent } from './pages/checkout/checkout';
 import { AdminComponent } from './pages/admin/admin';
@@ -8,8 +8,8 @@ import { RegisterComponent } from './pages/register/register';
 import { CatalogoComponent } from './pages/catalogo/catalogo';
 
 export const routes: Routes = [
-  { path: '', component: Home }, // Ruta raíz
-  { path: 'login', component: Login },
+  { path: '', component: HomeComponent }, // Ruta raíz
+  { path: 'login', component: LoginComponent },
   { path: 'carrito', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'admin', component: AdminComponent },

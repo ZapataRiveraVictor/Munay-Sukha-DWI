@@ -28,23 +28,38 @@
 </section>
 
 <div class="container products-section">
-  <h2>Productos Destacados</h2>
+  <h2 class="section-title">Productos Destacados</h2>
+
+  <p *ngIf="productos.length === 0" class="no-products">Cargando productos...</p>
+
   <div class="product-grid" *ngIf="productos.length > 0">
     <div class="card" *ngFor="let p of productos">
+
       <div class="card-img">
-        <img [src]="p.urlImagen" [alt]="p.nombre" onerror="this.src='https://via.placeholder.com/150'">
+        <img [src]="p.urlImagen" [alt]="p.nombre"
+          onerror="this.src='https://via.placeholder.com/300x200?text=Munay+Sukha'">
+        <span class="badge-low-stock" *ngIf="p.stock > 0 && p.stock < 5">¡Últimos!</span>
+        <span class="badge-out-stock" *ngIf="p.stock === 0">Agotado</span>
       </div>
+
       <div class="card-body">
-        <h3>{{ p.nombre }}</h3>
-        <p class="desc">{{ p.descripcion }}</p>
-        <div class="row">
-          <span class="price">S/. {{ p.precio }}</span>
-          <span class="stock" *ngIf="p.stock > 0">Stock: {{ p.stock }}</span>
+        <div>
+          <h3>{{ p.nombre }}</h3>
+          <p class="desc">{{ p.descripcion }}</p>
         </div>
-        <button class="btn-add" [disabled]="p.stock === 0" (click)="agregarAlCarrito(p)">
-          Agregar al Carrito
-        </button>
+
+        <div class="card-footer-info">
+          <div class="row-info">
+            <span class="price">S/. {{ p.precio }}</span>
+            <span class="stock" *ngIf="p.stock > 0">Stock: {{ p.stock }}</span>
+          </div>
+
+          <button class="btn-add" [disabled]="p.stock === 0" (click)="agregarAlCarrito(p)">
+            Agregar al Carrito
+          </button>
+        </div>
       </div>
+
     </div>
   </div>
 </div>

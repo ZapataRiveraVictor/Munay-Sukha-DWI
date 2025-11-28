@@ -10,7 +10,7 @@ import { CartService } from '../../services/cart'; // Revisa que la ruta sea cor
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
-export class Home implements OnInit { // El error dice que tu clase se llama 'Home'
+export class HomeComponent implements OnInit { // El error dice que tu clase se llama 'Home'
 
   productos: Producto[] = [];
   errorMensaje: string = '';

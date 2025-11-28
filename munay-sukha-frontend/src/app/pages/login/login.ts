@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth';
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
-export class Login {
+export class LoginComponent {
 
   loginForm: FormGroup;
   errorMensaje: string = '';

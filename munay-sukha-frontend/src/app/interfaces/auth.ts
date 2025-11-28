@@ -9,7 +9,7 @@ export interface LoginResponse {
     token: string;
     email: string;
     rol: string;
-    // Puedes agregar 'rol' o 'id' si tu backend los devuelve
+    nombre: string;
 }
 
 export interface RegistroRequest {

@@ -15,13 +15,15 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn: boolean = false;
   userEmail: string | null = '';
+  userName: string | null = '';
   cartCount: number = 0;
+  isMenuOpen: boolean = false;
 
   constructor(
     private authService: AuthService,
     private cartService: CartService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // 1. Verificar si está logueado al iniciar
@@ -36,13 +38,18 @@ export class HeaderComponent implements OnInit {
 
   checkLoginStatus() {
     this.isLoggedIn = this.authService.isLoggedIn();
-    // Si guardaste el email en localStorage, podrías recuperarlo aquí
-    // this.userEmail = localStorage.getItem('userEmail'); 
+    if (this.isLoggedIn) {
+      this.userName = this.authService.getUserName(); // Obtener nombre real
+    }
   }
 
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
+    this.isMenuOpen = false;
     this.router.navigate(['/login']);
+  }
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

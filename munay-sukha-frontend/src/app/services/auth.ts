@@ -10,7 +10,8 @@ export class AuthService {
 
   private apiUrl = '/api/auth';
   private tokenKey = 'authToken';
-  private roleKey = 'userRole'; // Clave para guardar el rol en localStorage
+  private roleKey = 'userRole';
+  private nameKey = 'userName';
 
   constructor(private http: HttpClient) { }
 
@@ -21,6 +22,7 @@ export class AuthService {
         if (response.token) {
           this.saveToken(response.token);
           this.saveRole(response.rol);
+          this.saveName(response.nombre);
         }
       })
     );
@@ -31,13 +33,15 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, datos);
   }
 
-  // --- MÉTODOS DE GESTIÓN DE TOKENS Y ROLES (Estos faltaban) ---
 
   private saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
 
-  // ¡ESTE ES EL QUE FALTABA!
+  private saveName(name: string): void {
+    localStorage.setItem(this.nameKey, name);
+  }
+
   private saveRole(rol: string): void {
     localStorage.setItem(this.roleKey, rol);
   }
@@ -50,9 +54,14 @@ export class AuthService {
     return localStorage.getItem(this.roleKey);
   }
 
+  getUserName(): string | null {
+    return localStorage.getItem(this.nameKey);
+  }
+
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.roleKey);
+    localStorage.removeItem(this.nameKey);
   }
 
   isLoggedIn(): boolean {
