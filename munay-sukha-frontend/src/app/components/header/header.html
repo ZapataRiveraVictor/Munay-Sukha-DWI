@@ -27,7 +27,7 @@
             </a>
 
             <ng-container *ngIf="isLoggedIn; else loginBtn">
-                <span class="user-welcome">Hola, {{ userName }} 🙋‍♂️</span>
+                <span class="user-welcome">Hola, {{ userName }} </span>
                 <button (click)="logout()" class="btn-logout">Salir</button>
             </ng-container>
 
