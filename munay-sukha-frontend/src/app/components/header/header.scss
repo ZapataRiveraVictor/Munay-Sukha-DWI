@@ -143,3 +143,17 @@
         }
     }
 }
+
+.admin-link {
+    color: #d84315;
+    /* Naranja rojizo para destacar */
+    font-weight: 700;
+    border: 1px solid #d84315;
+    padding: 5px 10px;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: #d84315;
+        color: white;
+    }
+}

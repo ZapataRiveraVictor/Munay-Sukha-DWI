@@ -17,13 +17,16 @@ export interface Producto {
   providedIn: 'root'
 })
 export class ProductService {
-  // Usamos el proxy, por eso solo ponemos /api/...
+
   private apiUrl = '/api/productos';
 
   constructor(private http: HttpClient) { }
 
-  // Método simple para obtener todos los productos
   getAllProductos(): Observable<Producto[]> {
     return this.http.get<Producto[]>(this.apiUrl);
+  }
+
+  getProductosDestacados(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.apiUrl}/destacados`);
   }
 }

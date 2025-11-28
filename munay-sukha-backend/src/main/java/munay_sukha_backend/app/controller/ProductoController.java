@@ -27,8 +27,7 @@ public class ProductoController {
 
     @GetMapping("/destacados")
     public ResponseEntity<List<Producto>> getProductosDestacados() {
-        List<Producto> productos = productoService.findProductosDestacados();
-        return ResponseEntity.ok(productos);
+        return ResponseEntity.ok(productoService.findProductosDestacados());
     }
 
     @GetMapping("/categoria/{categoria}")

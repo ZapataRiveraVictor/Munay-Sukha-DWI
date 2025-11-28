@@ -14,8 +14,8 @@ import { CartService } from '../../services/cart';
 export class HeaderComponent implements OnInit {
 
   isLoggedIn: boolean = false;
-  userEmail: string | null = '';
   userName: string | null = '';
+  isAdmin: boolean = false;
   cartCount: number = 0;
   isMenuOpen: boolean = false;
 
@@ -26,12 +26,8 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // 1. Verificar si está logueado al iniciar
     this.checkLoginStatus();
-
-    // 2. Suscribirse al carrito para actualizar el contador
     this.cartService.cart$.subscribe(items => {
-      // Sumamos la cantidad de todos los items
       this.cartCount = items.reduce((acc, item) => acc + item.cantidad, 0);
     });
   }
@@ -40,12 +36,18 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn = this.authService.isLoggedIn();
     if (this.isLoggedIn) {
       this.userName = this.authService.getUserName(); // Obtener nombre real
+      const role = this.authService.getUserRole();
+      this.isAdmin = (role === 'ROLE_ADMIN');
+    } else {
+      this.isAdmin = false;
     }
+
   }
 
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
+    this.isAdmin = false;
     this.isMenuOpen = false;
     this.router.navigate(['/login']);
   }

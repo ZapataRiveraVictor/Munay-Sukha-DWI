@@ -16,6 +16,10 @@
                 [routerLinkActiveOptions]="{exact: true}">Inicio</a>
             <a routerLink="/catalogo" (click)="toggleMenu()" routerLinkActive="active">Catálogo</a>
 
+            <a *ngIf="isAdmin" routerLink="/admin" (click)="toggleMenu()" routerLinkActive="active" class="admin-link">
+                Panel Admin
+            </a>
+
             <a routerLink="/carrito" (click)="toggleMenu()" routerLinkActive="active" class="cart-link">
                 🛒 Carrito <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
             </a>

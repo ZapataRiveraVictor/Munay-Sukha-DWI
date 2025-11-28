@@ -35,31 +35,33 @@
   <div class="product-grid" *ngIf="productos.length > 0">
     <div class="card" *ngFor="let p of productos">
 
-      <div class="card-img">
-        <img [src]="p.urlImagen" [alt]="p.nombre"
-          onerror="this.src='https://via.placeholder.com/300x200?text=Munay+Sukha'">
-        <span class="badge-low-stock" *ngIf="p.stock > 0 && p.stock < 5">¡Últimos!</span>
-        <span class="badge-out-stock" *ngIf="p.stock === 0">Agotado</span>
+      <div class="clickable-area" (click)="openModal(p)">
+        <div class="card-img">
+          <img [src]="p.urlImagen" [alt]="p.nombre"
+            onerror="this.src='https://via.placeholder.com/300?text=Sin+Imagen'">
+        </div>
+
+        <div class="card-body">
+          <span class="badge" [ngClass]="p.categoria">{{ p.categoria }}</span>
+
+          <h3>{{ p.nombre }}</h3>
+
+          <div class="row">
+            <span class="price">S/. {{ p.precio }}</span>
+            <span class="stock" *ngIf="p.stock > 0"> Stock: {{ p.stock }}</span>
+          </div>
+        </div>
       </div>
 
-      <div class="card-body">
-        <div>
-          <h3>{{ p.nombre }}</h3>
-          <p class="desc">{{ p.descripcion }}</p>
-        </div>
-
-        <div class="card-footer-info">
-          <div class="row-info">
-            <span class="price">S/. {{ p.precio }}</span>
-            <span class="stock" *ngIf="p.stock > 0">Stock: {{ p.stock }}</span>
-          </div>
-
-          <button class="btn-add" [disabled]="p.stock === 0" (click)="agregarAlCarrito(p)">
-            Agregar al Carrito
-          </button>
-        </div>
+      <div class="card-action">
+        <button class="btn-add" [disabled]="p.stock === 0" (click)="agregarAlCarrito(p)">
+          Agregar al Carrito
+        </button>
       </div>
 
     </div>
   </div>
+
+  <app-product-detail *ngIf="selectedProduct" [product]="selectedProduct" (close)="closeModal()">
+  </app-product-detail>
 </div>

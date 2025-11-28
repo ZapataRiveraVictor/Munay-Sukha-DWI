@@ -11,4 +11,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long>{
     List<Producto> findByCategoria(String categoria);
 
     List<Producto> findTop6ByStockGreaterThan(Integer stock);
+
 }

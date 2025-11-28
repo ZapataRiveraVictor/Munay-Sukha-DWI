@@ -24,7 +24,7 @@ export class CatalogoComponent implements OnInit {
   // Configuración
   categoryFilter: string = 'TODOS'; // 'TODOS', 'MUNAY', 'SUKHA'
   currentPage: number = 1;
-  pageSize: number = 6; // Cuántos productos por página
+  pageSize: number = 8; // Cuántos productos por página
   totalPages: number = 0;
   pagesArray: number[] = []; // Para dibujar los botoncitos [1, 2, 3]
 
