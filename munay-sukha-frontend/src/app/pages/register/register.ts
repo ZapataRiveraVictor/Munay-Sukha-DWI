@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { HttpErrorResponse } from '@angular/common/http'; // Importante importar esto
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   mensajeError: string = '';
   mensajeExito: string = '';
+  isSubmitting: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -26,49 +28,88 @@ export class RegisterComponent {
       nombreCompleto: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required] // Campo extra para confirmar
-    }, { 
-      validators: this.passwordMatchValidator // <--- Validación Personalizada
+      confirmPassword: ['', Validators.required]
+    }, {
+      validators: this.passwordMatchValidator
     });
   }
 
-  // Validador personalizado: Compara pass y confirmPass
   passwordMatchValidator(control: AbstractControl) {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
-
     if (password !== confirmPassword) {
       control.get('confirmPassword')?.setErrors({ mismatch: true });
       return { mismatch: true };
-    } else {
-      return null;
     }
+    return null;
+  }
+
+  // Lógica centralizada para redirigir
+  private handleSuccessRedirect() {
+    this.mensajeError = ''; // Limpiar errores previos
+    this.mensajeExito = '¡Registro exitoso! Redirigiendo al login...';
+
+    // No reseteamos el form inmediatamente para evitar saltos visuales raros
+
+    setTimeout(() => {
+      this.isSubmitting = false; // Desbloquear botón (aunque cambiemos de página)
+      this.router.navigate(['/login']);
+    }, 1500);
   }
 
   onSubmit() {
     this.mensajeError = '';
-    
+    this.mensajeExito = '';
+
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
     }
 
-    // Preparamos los datos (excluyendo confirmPassword que el backend no necesita)
+    this.isSubmitting = true; // Bloquear botón
     const { nombreCompleto, email, password } = this.registerForm.value;
 
     this.authService.register({ nombreCompleto, email, password }).subscribe({
       next: (res) => {
-        this.mensajeExito = '¡Registro exitoso! Redirigiendo al login...';
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2000);
+        // Caso ideal: Todo salió perfecto
+        this.handleSuccessRedirect();
       },
-      error: (err) => {
-        // Aquí capturamos el error "El correo ya existe" del backend
+      error: (err: HttpErrorResponse) => {
+        console.error('Respuesta del servidor:', err);
+
+        // --- ZONA DE DETECCIÓN DE "FALSO ERROR" ---
+
+        // 1. Si el status es 200 o 201, PERO cayó en error (suele pasar por Parsing de JSON)
+        // Significa que SÍ se creó en la base de datos.
+        if (err.status === 200 || err.status === 201) {
+          this.handleSuccessRedirect();
+          return;
+        }
+
+        // 2. Si el error es de texto (SyntaxError) a menudo significa que el backend devolvió texto plano
+        // y Angular falló al leerlo. Si la DB ya tiene el dato, esto cuenta como éxito.
+        if (err.statusText === 'OK' || (err.error && err.error.text && err.error.text.includes('creado'))) {
+          this.handleSuccessRedirect();
+          return;
+        }
+
+        // --- ZONA DE ERROR REAL ---
+
+        this.isSubmitting = false; // IMPORTANTE: Desbloquear botón si falló de verdad
+
+        let errorMsg = 'Ocurrió un error al registrarse.';
+
         if (err.error && typeof err.error === 'string') {
-            this.mensajeError = err.error; 
+          errorMsg = err.error;
+        } else if (err.message) {
+          errorMsg = err.message;
+        }
+
+        // Si el usuario ya existe, mostramos el error pero quizás quieras redirigir también
+        if (errorMsg.toLowerCase().includes('existe') || errorMsg.toLowerCase().includes('duplicate')) {
+          this.mensajeError = 'Este usuario ya está registrado. Intenta iniciar sesión.';
         } else {
-            this.mensajeError = 'Ocurrió un error al registrarse.';
+          this.mensajeError = `Error: ${errorMsg}`;
         }
       }
     });

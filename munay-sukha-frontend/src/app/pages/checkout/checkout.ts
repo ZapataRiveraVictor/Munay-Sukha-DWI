@@ -30,7 +30,11 @@ export class CheckoutComponent implements OnInit {
   ) {
     this.checkoutForm = this.fb.group({
       direccion: ['', Validators.required],
-      ciudad: ['', Validators.required]
+      ciudad: ['', Validators.required],
+      cardName: ['', Validators.required],
+      cardNumber: ['', Validators.required],
+      expiry: ['', Validators.required],
+      cvv: ['', Validators.required]
     });
   }
 
@@ -61,10 +65,9 @@ export class CheckoutComponent implements OnInit {
       next: (resp) => {
         console.log('Pedido creado:', resp);
         this.mensaje = '¡Compra Exitosa! ID del Pedido: ' + resp.id;
-        this.cartService.clearCart(); 
+        this.cartService.clearCart();
         this.cargando = false;
         this.cd.detectChanges();
-
         setTimeout(() => {
           this.router.navigate(['/']);
         }, 3000);
