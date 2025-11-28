@@ -2,12 +2,13 @@
 
     <div class="catalog-header">
         <h1>Nuestro Catálogo</h1>
+        <div class="search-bar">
+            <input type="text" placeholder="🔍 Buscar productos..." [(ngModel)]="searchTerm" (input)="onSearchChange()">
+        </div>
         <div class="filters">
             <button [class.active]="categoryFilter === 'TODOS'" (click)="setCategory('TODOS')">Todo</button>
-
             <button class="btn-munay" [class.active]="categoryFilter === 'MUNAY'" (click)="setCategory('MUNAY')">🌿
                 Munay</button>
-
             <button class="btn-sukha" [class.active]="categoryFilter === 'SUKHA'" (click)="setCategory('SUKHA')">🏺
                 Sukha</button>
         </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ProductService, Producto } from '../../services/product';
 import { CartService } from '../../services/cart';
 import { ProductDetailComponent } from '../../components/product-detail/product-detail';
@@ -7,7 +8,7 @@ import { ProductDetailComponent } from '../../components/product-detail/product-
 @Component({
   selector: 'app-catalogo',
   standalone: true,
-  imports: [CommonModule, ProductDetailComponent],
+  imports: [CommonModule, ProductDetailComponent, FormsModule],
   templateUrl: './catalogo.html',
   styleUrl: './catalogo.scss'
 })
@@ -28,6 +29,7 @@ export class CatalogoComponent implements OnInit {
   loading: boolean = true;
 
   selectedProduct: Producto | null = null;
+  searchTerm: string = '';
 
   constructor(
     private productService: ProductService,
@@ -64,6 +66,8 @@ export class CatalogoComponent implements OnInit {
   }
 
   applyFilter() {
+    let result = this.allProducts;
+
     if (this.categoryFilter === 'TODOS') {
       this.filteredProducts = this.allProducts;
     } else {
@@ -71,10 +75,23 @@ export class CatalogoComponent implements OnInit {
         p.categoria.toUpperCase() === this.categoryFilter
       );
     }
+    if (this.categoryFilter !== 'TODOS') {
+      result = result.filter(p =>
+        p.categoria.toUpperCase() === this.categoryFilter
+      );
+    }
+    if (this.searchTerm.trim() !== '') {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter(p =>
+        p.nombre.toLowerCase().includes(term) ||
+        p.descripcion.toLowerCase().includes(term)
+      );
+    }
+    this.filteredProducts = result;
+    this.currentPage = 1;
     this.calculatePagination();
   }
 
-  // 2. Lógica de Paginación
   calculatePagination() {
     this.totalPages = Math.ceil(this.filteredProducts.length / this.pageSize);
     this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
@@ -106,5 +123,8 @@ export class CatalogoComponent implements OnInit {
   agregarAlCarrito(producto: Producto) {
     this.cartService.addToCart(producto);
     alert('Producto agregado al carrito');
+  }
+  onSearchChange() {
+    this.applyFilter();
   }
 }

@@ -13,11 +13,11 @@
 
         <nav [class.open]="isMenuOpen">
             <a routerLink="/" (click)="toggleMenu()" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">Inicio</a>
-            <a routerLink="/catalogo" (click)="toggleMenu()" routerLinkActive="active">Catálogo</a>
+                [routerLinkActiveOptions]="{exact: true}">🏠 Inicio</a>
+            <a routerLink="/catalogo" (click)="toggleMenu()" routerLinkActive="active">📋 Catálogo</a>
 
             <a *ngIf="isAdmin" routerLink="/admin" (click)="toggleMenu()" routerLinkActive="active" class="admin-link">
-                Panel Admin
+                ⚙️ Panel Admin
             </a>
 
             <a routerLink="/carrito" (click)="toggleMenu()" routerLinkActive="active" class="cart-link">
@@ -25,7 +25,7 @@
             </a>
 
             <ng-container *ngIf="isLoggedIn; else loginBtn">
-                <span class="user-welcome">Hola, {{ userName }}</span>
+                <span class="user-welcome">Hola, {{ userName }} 🙋‍♂️</span>
                 <button (click)="logout()" class="btn-logout">Salir</button>
             </ng-container>
 
