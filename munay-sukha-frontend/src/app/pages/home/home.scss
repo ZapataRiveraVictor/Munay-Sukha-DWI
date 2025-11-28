@@ -266,7 +266,6 @@ h3 {
     justify-content: center;
     align-items: center;
     background: #f9f9f9;
-
     img {
       width: 100%;
       height: 100%;
@@ -278,6 +277,9 @@ h3 {
     &:hover img {
       transform: scale(1.05);
     }
+    
+    /* Zoom suave al pasar el mouse */
+    &:hover img { transform: scale(1.05); }
   }
 
   .card-body {
@@ -358,7 +360,6 @@ h3 {
         color: #999;
         font-weight: 500;
       }
-
       .no-stock {
         color: #d32f2f;
         font-weight: bold;
@@ -378,6 +379,16 @@ h3 {
     display: flex;
     justify-content: center;
 
+  /* --- 2. Área del Botón (REDISEÑADA - Estilo Píldora Delicado) --- */
+  .card-action {
+    padding: 0 15px 25px; /* Más espacio abajo para elegancia */
+    background-color: white;
+    margin-top: auto;
+    
+    /* Centramos el botón horizontalmente */
+    display: flex;
+    justify-content: center; 
+    
     .btn-add {
       /* Tamaño controlado, no full width */
       width: auto;

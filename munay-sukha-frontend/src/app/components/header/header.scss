@@ -18,14 +18,9 @@
 
     /* ... el resto del CSS (.container, .logo, nav, etc.) sigue igual ... */
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+  /* Aumentamos el desenfoque para el efecto "frosted glass" */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Compatibilidad con Safari */
 
     /* --- LOGO ESTILIZADO --- */
     .logo-style-2 {
