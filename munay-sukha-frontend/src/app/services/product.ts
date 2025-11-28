@@ -29,4 +29,16 @@ export class ProductService {
   getProductosDestacados(): Observable<Producto[]> {
     return this.http.get<Producto[]>(`${this.apiUrl}/destacados`);
   }
+
+  createProduct(producto: Producto): Observable<Producto> {
+    // Si tienes autenticación, aquí deberías pasar el token en los headers igual que en OrderService
+    // Pero como la ruta /api/productos suele ser pública para GET, asegúrate de que el POST requiera token
+    // O usa un interceptor. Por simplicidad ahora, lo mandamos directo.
+    return this.http.post<Producto>(this.apiUrl, producto);
+  }
+
+  // Eliminar Producto
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

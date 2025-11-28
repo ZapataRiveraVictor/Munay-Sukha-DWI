@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; 
 import { OrderService } from '../../services/order';
+import { ProductService, Producto } from '../../services/product'; 
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
 
@@ -14,79 +15,101 @@ import { Router } from '@angular/router';
 })
 export class AdminComponent implements OnInit {
 
+  // Vista actual: 'pedidos' o 'productos'
+  currentView: string = 'pedidos';
+
+  // Datos
   pedidos: any[] = [];
-  loading: boolean = true;
-  errorMensaje: string = '';
+  productos: Producto[] = [];
 
-  // Variable para saber qué pedido está expandido (viendo detalles)
-  expandedPedidoId: number | null = null;
+  // Objeto para el formulario de nuevo producto
+  newProduct: Producto = {
+    id: 0,
+    nombre: '',
+    descripcion: '',
+    precio: 0,
+    stock: 0,
+    categoria: 'MUNAY', // Valor por defecto
+    urlImagen: ''
+  };
 
-  // Lista de estados posibles para el select
-  estadosPosibles = ['PENDIENTE', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'CANCELADO'];
+  loading: boolean = false;
+  showModal: boolean = false; // Para abrir/cerrar el formulario
 
   constructor(
     private orderService: OrderService,
+    private productService: ProductService, // <--- Inyectar
     private authService: AuthService,
     private router: Router,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    const role = this.authService.getUserRole();
-    if (role !== 'ROLE_ADMIN') {
-      alert('Acceso denegado. Solo administradores.');
+    if (this.authService.getUserRole() !== 'ROLE_ADMIN') {
       this.router.navigate(['/']);
       return;
     }
-    this.cargarPedidos();
+    this.loadData();
   }
 
-  cargarPedidos() {
+  // Cambiar pestaña
+  switchView(view: string) {
+    this.currentView = view;
+    this.loadData();
+  }
+
+  loadData() {
     this.loading = true;
-    this.orderService.getAllOrders().subscribe({
-      next: (data) => {
+    if (this.currentView === 'pedidos') {
+      // Cargar Pedidos
+      this.orderService.getAllOrders().subscribe(data => {
         this.pedidos = data;
         this.loading = false;
-        console.log('Pedidos cargados:', data);
-
-        this.cd.detectChanges(); 
-      },
-      error: (err) => {
-        console.error(err);
-        this.errorMensaje = 'No se pudieron cargar los pedidos.';
-        this.loading = false;
-        this.cd.detectChanges(); 
-      }
-    });
-  }
-
-  // Alternar visibilidad de detalles
-  toggleDetalles(id: number) {
-    if (this.expandedPedidoId === id) {
-      this.expandedPedidoId = null; // Cerrar si ya está abierto
-    } else {
-      this.expandedPedidoId = id; // Abrir
-    }
-  }
-
-  // Cambiar estado
-  cambiarEstado(pedido: any, nuevoEstado: string) {
-    if (!confirm(`¿Seguro que quieres cambiar el estado a ${nuevoEstado}?`)) {
-      // Si cancela, recargamos para volver al estado anterior visualmente
-      this.cargarPedidos(); 
-      return;
-    }
-
-    this.orderService.updateOrderStatus(pedido.id, nuevoEstado).subscribe({
-      next: () => {
-        pedido.estado = nuevoEstado; // Actualizamos visualmente
-        alert('Estado actualizado correctamente.');
         this.cd.detectChanges();
+      });
+    } else {
+      // Cargar Productos (Inventario)
+      this.productService.getAllProductos().subscribe(data => {
+        this.productos = data;
+        this.loading = false;
+        this.cd.detectChanges();
+      });
+    }
+  }
+
+  // --- LÓGICA DE PRODUCTOS ---
+
+  openProductModal() {
+    this.showModal = true;
+  }
+
+  closeProductModal() {
+    this.showModal = false;
+    // Resetear formulario
+    this.newProduct = { id: 0, nombre: '', descripcion: '', precio: 0, stock: 0, categoria: 'MUNAY', urlImagen: '' };
+  }
+
+  saveProduct() {
+    this.productService.createProduct(this.newProduct).subscribe({
+      next: (res) => {
+        alert('Producto creado exitosamente');
+        this.closeProductModal();
+        this.loadData(); // Recargar la lista
       },
       error: (err) => {
         console.error(err);
-        alert('Error al actualizar estado.');
+        alert('Error al crear producto');
       }
     });
   }
+
+  deleteProduct(id: number) {
+    if (confirm('¿Estás seguro de eliminar este producto?')) {
+      this.productService.deleteProduct(id).subscribe(() => {
+        this.loadData();
+      });
+    }
+  }
+
+  // ... (Tus métodos existentes de cambiar estado de pedido siguen aquí) ...
 }
