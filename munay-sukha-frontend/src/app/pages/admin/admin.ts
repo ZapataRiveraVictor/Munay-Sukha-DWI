@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order';
 import { ProductService, Producto } from '../../services/product';
 import { AuthService } from '../../services/auth';
@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit {
   // --- VARIABLES DE PRODUCTOS ---
   productos: Producto[] = [];
   showModal: boolean = false;
-  
+
   newProduct: Producto = {
     id: 0,
     nombre: '',
@@ -45,7 +45,7 @@ export class AdminComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.authService.getUserRole() !== 'ROLE_ADMIN') {
@@ -89,7 +89,7 @@ export class AdminComponent implements OnInit {
 
   cambiarEstado(pedido: any, nuevoEstado: string) {
     if (!confirm(`¿Cambiar estado a ${nuevoEstado}?`)) {
-      this.loadData(); 
+      this.loadData();
       return;
     }
     this.orderService.updateOrderStatus(pedido.id, nuevoEstado).subscribe({
@@ -105,8 +105,8 @@ export class AdminComponent implements OnInit {
   // --- MÉTODOS DE PRODUCTOS ---
 
   openProductModal() { this.showModal = true; }
-  
-  closeProductModal() { 
+
+  closeProductModal() {
     this.showModal = false;
     this.newProduct = { id: 0, nombre: '', descripcion: '', precio: 0, stock: 0, categoria: 'MUNAY', urlImagen: '' };
   }
@@ -123,7 +123,7 @@ export class AdminComponent implements OnInit {
   }
 
   deleteProduct(id: number) {
-    if(confirm('¿Eliminar producto?')) {
+    if (confirm('¿Eliminar producto?')) {
       this.productService.deleteProduct(id).subscribe(() => this.loadData());
     }
   }
