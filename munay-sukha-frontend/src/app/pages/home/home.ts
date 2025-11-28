@@ -15,7 +15,11 @@ export class Home implements OnInit { // El error dice que tu clase se llama 'Ho
   productos: Producto[] = [];
   errorMensaje: string = '';
 
-  constructor(private productService: ProductService, private cartService: CartService, private cd: ChangeDetectorRef) { }
+  constructor(
+    private productService: ProductService, 
+    private cartService: CartService, 
+    private cd: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.productService.getAllProductos().subscribe({

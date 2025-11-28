@@ -1,0 +1,53 @@
+<div class="catalog-container">
+
+    <div class="catalog-header">
+        <h1>Nuestro Catálogo</h1>
+        <div class="filters">
+            <button [class.active]="categoryFilter === 'TODOS'" (click)="setCategory('TODOS')">Todo</button>
+
+            <button class="btn-munay" [class.active]="categoryFilter === 'MUNAY'" (click)="setCategory('MUNAY')">🌿
+                Munay</button>
+
+            <button class="btn-sukha" [class.active]="categoryFilter === 'SUKHA'" (click)="setCategory('SUKHA')">🏺
+                Sukha</button>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">Cargando productos...</div>
+
+    <div class="product-grid" *ngIf="!loading && paginatedProducts.length > 0">
+        <div class="card" *ngFor="let p of paginatedProducts">
+            <div class="card-img">
+                <img [src]="p.urlImagen" [alt]="p.nombre" onerror="this.src='https://via.placeholder.com/150'">
+            </div>
+            <div class="card-body">
+                <span class="badge" [ngClass]="p.categoria">{{ p.categoria }}</span>
+                <h3>{{ p.nombre }}</h3>
+                <p class="desc">{{ p.descripcion }}</p>
+                <div class="row">
+                    <span class="price">S/. {{ p.precio }}</span>
+                    <span class="stock" *ngIf="p.stock > 0">Stock: {{ p.stock }}</span>
+                    <span class="no-stock" *ngIf="p.stock === 0">Agotado</span>
+                </div>
+                <button class="btn-add" [disabled]="p.stock === 0" (click)="agregarAlCarrito(p)">
+                    Agregar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && paginatedProducts.length === 0" class="empty">
+        <p>No se encontraron productos en esta categoría.</p>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+
+        <button *ngFor="let page of pagesArray" [class.active]="page === currentPage" (click)="changePage(page)">
+            {{ page }}
+        </button>
+
+        <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente</button>
+    </div>
+
+</div>
