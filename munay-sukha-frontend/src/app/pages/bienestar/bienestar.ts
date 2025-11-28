@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Para los inputs
-import { ProductService, Producto } from '../../services/product';
-import { CartService } from '../../services/cart';
+import { FormsModule } from '@angular/forms'; 
+import { ProductService, Producto } from '../../services/product'; // Ajusta la ruta si es necesario
+import { CartService } from '../../services/cart'; // Ajusta la ruta si es necesario
 
 @Component({
   selector: 'app-bienestar',
@@ -13,17 +13,18 @@ import { CartService } from '../../services/cart';
 })
 export class BienestarComponent implements OnInit {
 
-  // Inputs del usuario
-  peso: number | null = null; // en kg
-  altura: number | null = null; // en cm
+  // Inputs
+  peso: number | null = null;
+  altura: number | null = null;
 
   // Resultados
   imc: number = 0;
   estado: string = '';
-  colorEstado: string = '';
+  colorClass: string = ''; // Cambiado: Usaremos clases CSS en vez de Hex para mejor diseño
   mensajeDieta: string = '';
+  mostrarResultado: boolean = false; // Para la animación
 
-  // Productos recomendados
+  // Datos
   allProducts: Producto[] = [];
   productosSugeridos: Producto[] = [];
 
@@ -33,7 +34,6 @@ export class BienestarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Cargamos todos los productos para tenerlos listos para filtrar
     this.productService.getAllProductos().subscribe(data => {
       this.allProducts = data;
     });
@@ -41,64 +41,65 @@ export class BienestarComponent implements OnInit {
 
   calcularIMC() {
     if (!this.peso || !this.altura) {
-      alert('Por favor, ingresa tu peso y altura.');
-      return;
+      // Opcional: Podrías usar una variable para mostrar error en el HTML en vez de alert
+      return; 
     }
 
-    // Fórmula IMC: peso (kg) / altura (m)²
     const alturaMetros = this.altura / 100;
     this.imc = this.peso / (alturaMetros * alturaMetros);
 
     this.determinarEstado();
     this.generarRecomendaciones();
+    this.mostrarResultado = true; // Activar animación
   }
 
   determinarEstado() {
+    // Asignamos clases CSS para estilos completos (fondo, borde, texto)
     if (this.imc < 18.5) {
       this.estado = 'Bajo Peso';
-      this.colorEstado = '#e53935'; // Rojo
+      this.colorClass = 'danger'; // Rojo
       this.mensajeDieta = 'Necesitas alimentos ricos en energía y proteínas saludables para ganar masa muscular de forma sana.';
     } else if (this.imc >= 18.5 && this.imc < 24.9) {
       this.estado = 'Peso Saludable';
-      this.colorEstado = '#2e7d32'; // Verde
+      this.colorClass = 'success'; // Verde
       this.mensajeDieta = '¡Excelente! Mantén tu equilibrio con alimentos naturales, frutas secas y buena hidratación.';
     } else if (this.imc >= 25 && this.imc < 29.9) {
       this.estado = 'Sobrepeso';
-      this.colorEstado = '#fb8c00'; // Naranja
+      this.colorClass = 'warning'; // Naranja
       this.mensajeDieta = 'Te recomendamos reducir carbohidratos refinados y optar por snacks ligeros, infusiones y mucha fibra.';
     } else {
       this.estado = 'Obesidad';
-      this.colorEstado = '#d32f2f'; // Rojo oscuro
+      this.colorClass = 'danger'; // Rojo
       this.mensajeDieta = 'Es importante priorizar alimentos bajos en calorías, depurativos y evitar azúcares procesados.';
     }
   }
 
   generarRecomendaciones() {
-    // Lógica simple de recomendación basada en palabras clave del nombre/descripción
+    if (this.allProducts.length === 0) return;
+
     if (this.estado === 'Bajo Peso') {
-      // Recomendar cosas calóricas/energéticas: Mantequilla de maní, Granola, Frutos secos
       this.productosSugeridos = this.allProducts.filter(p =>
         p.nombre.toLowerCase().includes('maní') ||
         p.nombre.toLowerCase().includes('granola') ||
         p.nombre.toLowerCase().includes('miel')
-      );
+      ).slice(0, 3);
     } else if (this.estado === 'Peso Saludable') {
-      // Recomendar balanceado: Mix frutos, Miel, Yogur (si hubiera)
       this.productosSugeridos = this.allProducts.filter(p =>
-        p.categoria === 'MUNAY' // Todo lo de comida saludable
-      ).slice(0, 3); // Solo mostrar 3
+        p.categoria === 'MUNAY'
+      ).slice(0, 3);
     } else {
-      // Sobrepeso/Obesidad: Recomendar detox, té, infusiones, snacks ligeros
       this.productosSugeridos = this.allProducts.filter(p =>
         p.nombre.toLowerCase().includes('infusión') ||
         p.nombre.toLowerCase().includes('té') ||
         p.nombre.toLowerCase().includes('detox') ||
-        p.nombre.toLowerCase().includes('almendra') // Grasas buenas pero ligeras
-      );
+        p.nombre.toLowerCase().includes('almendra')
+      ).slice(0, 3);
     }
   }
 
   agregarAlCarrito(producto: Producto) {
     this.cartService.addToCart(producto);
+    // Feedback visual opcional
+    alert('Producto agregado para tu bienestar');
   }
 }
