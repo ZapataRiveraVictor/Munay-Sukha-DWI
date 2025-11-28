@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
-import { HttpErrorResponse } from '@angular/common/http'; // Importante importar esto
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -46,13 +46,11 @@ export class RegisterComponent {
 
   // Lógica centralizada para redirigir
   private handleSuccessRedirect() {
-    this.mensajeError = ''; // Limpiar errores previos
+    this.mensajeError = ''; 
     this.mensajeExito = '¡Registro exitoso! Redirigiendo al login...';
 
-    // No reseteamos el form inmediatamente para evitar saltos visuales raros
-
     setTimeout(() => {
-      this.isSubmitting = false; // Desbloquear botón (aunque cambiemos de página)
+      this.isSubmitting = false; 
       this.router.navigate(['/login']);
     }, 1500);
   }
@@ -66,36 +64,27 @@ export class RegisterComponent {
       return;
     }
 
-    this.isSubmitting = true; // Bloquear botón
+    this.isSubmitting = true; 
     const { nombreCompleto, email, password } = this.registerForm.value;
 
     this.authService.register({ nombreCompleto, email, password }).subscribe({
       next: (res) => {
-        // Caso ideal: Todo salió perfecto
         this.handleSuccessRedirect();
       },
       error: (err: HttpErrorResponse) => {
         console.error('Respuesta del servidor:', err);
 
-        // --- ZONA DE DETECCIÓN DE "FALSO ERROR" ---
-
-        // 1. Si el status es 200 o 201, PERO cayó en error (suele pasar por Parsing de JSON)
-        // Significa que SÍ se creó en la base de datos.
         if (err.status === 200 || err.status === 201) {
           this.handleSuccessRedirect();
           return;
         }
 
-        // 2. Si el error es de texto (SyntaxError) a menudo significa que el backend devolvió texto plano
-        // y Angular falló al leerlo. Si la DB ya tiene el dato, esto cuenta como éxito.
         if (err.statusText === 'OK' || (err.error && err.error.text && err.error.text.includes('creado'))) {
           this.handleSuccessRedirect();
           return;
         }
 
-        // --- ZONA DE ERROR REAL ---
-
-        this.isSubmitting = false; // IMPORTANTE: Desbloquear botón si falló de verdad
+        this.isSubmitting = false; 
 
         let errorMsg = 'Ocurrió un error al registrarse.';
 
@@ -105,7 +94,6 @@ export class RegisterComponent {
           errorMsg = err.message;
         }
 
-        // Si el usuario ya existe, mostramos el error pero quizás quieras redirigir también
         if (errorMsg.toLowerCase().includes('existe') || errorMsg.toLowerCase().includes('duplicate')) {
           this.mensajeError = 'Este usuario ya está registrado. Intenta iniciar sesión.';
         } else {

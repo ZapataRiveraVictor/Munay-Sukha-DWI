@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Producto } from './product'; // Importamos la interfaz del producto
+import { Producto } from './product'; 
 
-// Definimos qué es un ítem del carrito
 export interface CartItem {
   producto: Producto;
   cantidad: number;
@@ -13,10 +12,8 @@ export interface CartItem {
 })
 export class CartService {
 
-  // La fuente de la verdad (estado privado)
   private cartItems = new BehaviorSubject<CartItem[]>([]);
 
-  // Lo que los componentes ven (observable público)
   cart$ = this.cartItems.asObservable();
 
   constructor() { }
@@ -35,8 +32,8 @@ export class CartService {
       this.cartItems.next([...currentItems, { producto, cantidad: 1 }]);
     }
 
-    console.log('Carrito actual:', this.cartItems.value); // Para depurar
-    alert('Producto agregado al carrito'); // Feedback simple por ahora
+    console.log('Carrito actual:', this.cartItems.value); 
+    alert('Producto agregado al carrito');
   }
 
   // 2. Eliminar producto

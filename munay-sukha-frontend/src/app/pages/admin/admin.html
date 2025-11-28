@@ -4,9 +4,8 @@
         <h1>Panel de Administración</h1>
 
         <div class="tabs">
-            <button [class.active]="currentView === 'pedidos'" (click)="switchView('pedidos')">📦 Pedidos</button>
-            <button [class.active]="currentView === 'productos'" (click)="switchView('productos')">🏷️
-                Inventario</button>
+            <button [class.active]="currentView === 'pedidos'" (click)="switchView('pedidos')">Pedidos</button>
+            <button [class.active]="currentView === 'productos'" (click)="switchView('productos')">Inventario</button>
         </div>
     </div>
 
@@ -123,6 +122,7 @@
                         <td>S/. {{ p.precio }}</td>
                         <td [style.color]="p.stock < 5 ? 'red' : 'inherit'">{{ p.stock }}</td>
                         <td>
+                            <button class="btn-edit" (click)="openEditModal(p)" title="Editar Stock/Info">✏️</button>
                             <button class="btn-delete" (click)="deleteProduct(p.id)">🗑️</button>
                         </td>
                     </tr>

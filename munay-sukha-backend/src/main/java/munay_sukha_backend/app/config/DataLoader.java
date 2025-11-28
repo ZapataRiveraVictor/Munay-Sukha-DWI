@@ -48,7 +48,7 @@ public class DataLoader implements CommandLineRunner {
             System.out.println(">>> SUPER ADMIN CREADO: admin@munay.com / admin123");
         }
 
-        // 3. CREAR CLIENTE DE PRUEBA (Opcional, para tus tests rápidos)
+        // 3. CREAR CLIENTE DE PRUEBA
         if (!usuarioRepository.existsByEmail("cliente@munay.com")) {
             Usuario cliente = new Usuario();
             cliente.setNombreCompleto("Cliente Test");

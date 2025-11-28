@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
-import { ProductService, Producto } from '../../services/product'; // Ajusta la ruta si es necesario
-import { CartService } from '../../services/cart'; // Ajusta la ruta si es necesario
+import { ProductService, Producto } from '../../services/product'; 
+import { CartService } from '../../services/cart'; 
 
 @Component({
   selector: 'app-bienestar',
@@ -20,9 +20,9 @@ export class BienestarComponent implements OnInit {
   // Resultados
   imc: number = 0;
   estado: string = '';
-  colorClass: string = ''; // Cambiado: Usaremos clases CSS en vez de Hex para mejor diseño
+  colorClass: string = ''; 
   mensajeDieta: string = '';
-  mostrarResultado: boolean = false; // Para la animación
+  mostrarResultado: boolean = false; 
 
   // Datos
   allProducts: Producto[] = [];
@@ -41,7 +41,6 @@ export class BienestarComponent implements OnInit {
 
   calcularIMC() {
     if (!this.peso || !this.altura) {
-      // Opcional: Podrías usar una variable para mostrar error en el HTML en vez de alert
       return; 
     }
 
@@ -50,26 +49,25 @@ export class BienestarComponent implements OnInit {
 
     this.determinarEstado();
     this.generarRecomendaciones();
-    this.mostrarResultado = true; // Activar animación
+    this.mostrarResultado = true; 
   }
 
   determinarEstado() {
-    // Asignamos clases CSS para estilos completos (fondo, borde, texto)
     if (this.imc < 18.5) {
       this.estado = 'Bajo Peso';
-      this.colorClass = 'danger'; // Rojo
+      this.colorClass = 'danger'; 
       this.mensajeDieta = 'Necesitas alimentos ricos en energía y proteínas saludables para ganar masa muscular de forma sana.';
     } else if (this.imc >= 18.5 && this.imc < 24.9) {
       this.estado = 'Peso Saludable';
-      this.colorClass = 'success'; // Verde
+      this.colorClass = 'success'; 
       this.mensajeDieta = '¡Excelente! Mantén tu equilibrio con alimentos naturales, frutas secas y buena hidratación.';
     } else if (this.imc >= 25 && this.imc < 29.9) {
       this.estado = 'Sobrepeso';
-      this.colorClass = 'warning'; // Naranja
+      this.colorClass = 'warning'; 
       this.mensajeDieta = 'Te recomendamos reducir carbohidratos refinados y optar por snacks ligeros, infusiones y mucha fibra.';
     } else {
       this.estado = 'Obesidad';
-      this.colorClass = 'danger'; // Rojo
+      this.colorClass = 'danger'; 
       this.mensajeDieta = 'Es importante priorizar alimentos bajos en calorías, depurativos y evitar azúcares procesados.';
     }
   }
@@ -99,7 +97,6 @@ export class BienestarComponent implements OnInit {
 
   agregarAlCarrito(producto: Producto) {
     this.cartService.addToCart(producto);
-    // Feedback visual opcional
     alert('Producto agregado para tu bienestar');
   }
 }

@@ -9,7 +9,7 @@ import { CartService, CartItem } from './cart';
 })
 export class OrderService {
 
-  private apiUrl = '/api/pedidos'; // Ruta base
+  private apiUrl = '/api/pedidos'; 
 
   constructor(
     private http: HttpClient,
@@ -23,9 +23,9 @@ export class OrderService {
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    // 1. Convertimos el carrito a un formato simple (Solo ID y Cantidad)
+    // 1. Convertimos el carrito a un formato simple 
     const itemsSimples = this.cartService.getItems().map(item => ({
-      productoId: item.producto.id, // Solo mandamos el ID
+      productoId: item.producto.id, 
       cantidad: item.cantidad
     }));
 
@@ -44,15 +44,12 @@ export class OrderService {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    // Asegúrate de que este endpoint exista en tu PedidoController de Java
-    // @GetMapping public ResponseEntity<List<Pedido>> getAllPedidos() ...
     return this.http.get<any[]>(this.apiUrl, { headers });
   }
   updateOrderStatus(pedidoId: number, nuevoEstado: string): Observable<any> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
 
-    // Enviamos el estado como query param: ?estado=ENVIADO
     return this.http.put(`${this.apiUrl}/${pedidoId}/estado`, {}, {
       headers,
       params: { estado: nuevoEstado }

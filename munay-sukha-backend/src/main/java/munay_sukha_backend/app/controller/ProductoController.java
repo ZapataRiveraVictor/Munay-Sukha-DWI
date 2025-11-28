@@ -44,10 +44,13 @@ public class ProductoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProducto(@PathVariable Long id) {
-        // Necesitas agregar deleteProducto en tu Service también si no existe
-        // productoService.deleteProducto(id);
-        // Por ahora lo simulamos o lo implementas en el service:
-        // productoRepository.deleteById(id);
+        productoService.deleteProducto(id);
         return ResponseEntity.ok("Producto eliminado");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto producto) {
+        producto.setId(id);
+        return ResponseEntity.ok(productoService.saveProducto(producto));
     }
 }

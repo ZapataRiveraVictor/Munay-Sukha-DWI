@@ -20,11 +20,11 @@ export class CatalogoComponent implements OnInit {
   paginatedProducts: Producto[] = [];
 
   // Configuración
-  categoryFilter: string = 'TODOS'; // 'TODOS', 'MUNAY', 'SUKHA'
+  categoryFilter: string = 'TODOS'; 
   currentPage: number = 1;
-  pageSize: number = 9; // Cuántos productos por página
+  pageSize: number = 9; 
   totalPages: number = 0;
-  pagesArray: number[] = []; // Para dibujar los botoncitos [1, 2, 3]
+  pagesArray: number[] = []; 
 
   loading: boolean = true;
 
@@ -46,7 +46,7 @@ export class CatalogoComponent implements OnInit {
     this.productService.getAllProductos().subscribe({
       next: (data) => {
         this.allProducts = data;
-        this.applyFilter(); // Aplicar filtro inicial (Todos)
+        this.applyFilter();
         this.loading = false;
         this.cd.detectChanges();
       },
@@ -61,7 +61,7 @@ export class CatalogoComponent implements OnInit {
   // 1. Lógica de Filtrado
   setCategory(category: string) {
     this.categoryFilter = category;
-    this.currentPage = 1; // Resetear a página 1 al cambiar filtro
+    this.currentPage = 1; 
     this.applyFilter();
   }
 
@@ -108,7 +108,7 @@ export class CatalogoComponent implements OnInit {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.updateView();
-      window.scrollTo(0, 0); // Subir al inicio al cambiar página
+      window.scrollTo(0, 0); 
     }
   }
 

@@ -26,9 +26,9 @@ public class PedidoController {
         this.usuarioRepository = usuarioRepository;
     }
 
-    // POST: /api/pedidos/checkout (RUTA PROTEGIDA: Solo usuarios autenticados)
+    // POST: /api/pedidos/checkout
     @PostMapping("/checkout")
-    public ResponseEntity<?> realizarCheckout(@RequestBody PedidoRequest pedidoRequest, // <-- Cambiado a DTO
+    public ResponseEntity<?> realizarCheckout(@RequestBody PedidoRequest pedidoRequest,
             @AuthenticationPrincipal UserDetails userDetails) {
         try {
             Usuario usuario = usuarioRepository.findByEmail(userDetails.getUsername())
@@ -43,8 +43,7 @@ public class PedidoController {
             // 2. Convertir lista de Items DTO a Entidades ItemPedido
             List<ItemPedido> items = new ArrayList<>();
             for (ItemRequest itemReq : pedidoRequest.getItems()) {
-                // Buscamos el producto por ID (necesitamos el repositorio o crearlo vacío con
-                // ID)
+                // Buscamos el producto por ID
                 Producto p = new Producto();
                 p.setId(itemReq.getProductoId()); // Hibernate lo buscará por ID luego
 
@@ -59,13 +58,12 @@ public class PedidoController {
             return ResponseEntity.ok(pedidoGuardado);
 
         } catch (Exception e) {
-            e.printStackTrace(); // Imprimir error en consola para ver qué pasa
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 
-    // GET: /api/pedidos (RUTA PROTEGIDA: Solo para ADMIN - configurado en
-    // SecurityConfig)
+    // GET: /api/pedidos (RUTA PROTEGIDA: Solo para ADMIN - configurado en SecurityConfig)
     @GetMapping
     public ResponseEntity<List<Pedido>> getAllPedidos() {
         return ResponseEntity.ok(pedidoService.findAll());

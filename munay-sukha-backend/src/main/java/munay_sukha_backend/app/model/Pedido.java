@@ -29,7 +29,7 @@ public class Pedido {
     @Column(nullable = false)
     private String ciudad;
 
-    // Total final pagado (incluyendo envío e impuestos si los hay)
+    // Total final pagado
     @Column(nullable = false)
     private Double total;
 

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // Esta clase es la que representa los datos del usuario autenticado
-public class UserDetailsImpl implements UserDetails { 
+public class UserDetailsImpl implements UserDetails {
 
     private Long id;
     private String email;
@@ -19,7 +19,7 @@ public class UserDetailsImpl implements UserDetails {
 
     // Constructor completo
     public UserDetailsImpl(Long id, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -38,26 +38,39 @@ public class UserDetailsImpl implements UserDetails {
                 usuario.getPassword(),
                 authorities);
     }
-    
-    // El método getUsername() es OBLIGATORIO en UserDetails
+
     @Override
     public String getUsername() {
-        return email; 
+        return email;
     }
-    
-    // ... (El resto de métodos de UserDetails: getPassword, getAuthorities, isEnabled, etc.)
-    // Debes agregarlos todos aquí.
-    
+
     @Override
-    public String getPassword() { return password; }
+    public String getPassword() {
+        return password;
+    }
+
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() { return authorities; }
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
     @Override
-    public boolean isAccountNonExpired() { return true; }
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
     @Override
-    public boolean isAccountNonLocked() { return true; }
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
     @Override
-    public boolean isCredentialsNonExpired() { return true; }
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
     @Override
-    public boolean isEnabled() { return true; }
+    public boolean isEnabled() {
+        return true;
+    }
 }

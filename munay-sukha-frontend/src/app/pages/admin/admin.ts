@@ -16,14 +16,14 @@ import { Router } from '@angular/router';
 export class AdminComponent implements OnInit {
 
   // --- VARIABLES DE VISTA ---
-  currentView: string = 'pedidos'; // 'pedidos' o 'productos'
+  currentView: string = 'pedidos';
   loading: boolean = false;
   errorMensaje: string = '';
 
   // --- VARIABLES DE PEDIDOS ---
   pedidos: any[] = [];
-  expandedPedidoId: number | null = null; // <--- ¡ESTA ERA LA QUE FALTABA!
-  estadosPosibles = ['PENDIENTE', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'CANCELADO']; // <--- Y ESTA
+  expandedPedidoId: number | null = null;
+  estadosPosibles = ['PENDIENTE', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'CANCELADO'];
 
   // --- VARIABLES DE PRODUCTOS ---
   productos: Producto[] = [];
@@ -104,7 +104,14 @@ export class AdminComponent implements OnInit {
 
   // --- MÉTODOS DE PRODUCTOS ---
 
-  openProductModal() { this.showModal = true; }
+  openProductModal() {
+    this.showModal = true;
+    this.newProduct = { id: 0, nombre: '', descripcion: '', precio: 0, stock: 0, categoria: 'MUNAY', urlImagen: '' };
+  }
+  openEditModal(producto: Producto) {
+    this.showModal = true;
+    this.newProduct = { ...producto };
+  }
 
   closeProductModal() {
     this.showModal = false;
@@ -112,14 +119,28 @@ export class AdminComponent implements OnInit {
   }
 
   saveProduct() {
-    this.productService.createProduct(this.newProduct).subscribe({
-      next: () => {
-        alert('Producto guardado');
-        this.closeProductModal();
-        this.loadData();
-      },
-      error: () => alert('Error al guardar producto')
-    });
+    if (this.newProduct.id && this.newProduct.id > 0) {
+
+      this.productService.updateProduct(this.newProduct.id, this.newProduct).subscribe({
+        next: () => {
+          alert('Producto actualizado correctamente');
+          this.closeProductModal();
+          this.loadData(); 
+        },
+        error: () => alert('Error al actualizar producto')
+      });
+
+    } else {
+
+      this.productService.createProduct(this.newProduct).subscribe({
+        next: () => {
+          alert('Producto creado exitosamente');
+          this.closeProductModal();
+          this.loadData();
+        },
+        error: () => alert('Error al crear producto')
+      });
+    }
   }
 
   deleteProduct(id: number) {

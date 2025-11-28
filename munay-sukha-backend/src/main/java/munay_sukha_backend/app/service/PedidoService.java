@@ -38,7 +38,7 @@ public class PedidoService {
                 throw new Exception("Stock insuficiente para el producto: " + producto.getNombre());
             }
 
-            // 2. Descontar Stock y Fijar Precio Unitario (CRUCIAL)
+            // 2. Descontar Stock y Fijar Precio Unitario
             producto.setStock(producto.getStock() - item.getCantidad());
             productoRepository.save(producto);
 
@@ -49,9 +49,8 @@ public class PedidoService {
         // 3. Crear Pedido
         nuevoPedido.setUsuario(usuario);
         // Validar que el total calculado coincida con el total enviado por el cliente
-        // (por seguridad)
         if (Math.abs(nuevoPedido.getTotal() - totalCalculado) > 0.01) {
-            // throw new Exception("Error de cálculo de total.");
+            throw new Exception("Error de cálculo de total.");
         }
 
         Pedido pedidoGuardado = pedidoRepository.save(nuevoPedido);

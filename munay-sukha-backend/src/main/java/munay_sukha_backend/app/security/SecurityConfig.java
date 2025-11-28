@@ -42,20 +42,17 @@ public class SecurityConfig {
         http
                 // Deshabilita CSRF (típico en API REST sin sesiones)
                 .csrf(AbstractHttpConfigurer::disable)
-                // Configura que Spring no use sesiones de estado (stateless)
+                // Configura que Spring no use sesiones de estado 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Define las reglas de acceso a las rutas:
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas: login, registro y el catálogo
                         .requestMatchers("/api/auth/**", "/api/productos/**", "/api/informacion/**").permitAll()
-                        // Rutas privadas: solo accesibles por ADMIN (ej: gestión de pedidos y
-                        // productos)
+                        // Rutas privadas: solo accesibles por ADMIN 
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // Cualquier otra petición debe estar autenticada
                         .anyRequest().authenticated());
-
-        // Aquí se añadiría la lógica JWT (que haremos en pasos posteriores con filtros)
         
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         

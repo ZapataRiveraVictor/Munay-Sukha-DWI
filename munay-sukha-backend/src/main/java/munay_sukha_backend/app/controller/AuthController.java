@@ -63,8 +63,8 @@ public class AuthController {
         usuario.setEmail(registroRequest.getEmail());
         usuario.setPassword(passwordEncoder.encode(registroRequest.getPassword()));
 
-        // 3. LÓGICA: Asignar Rol de CLIENTE Automáticamente
-        // Buscamos el rol en la DB, si no existe (raro), lanzamos error o creamos uno por defecto
+        // 3. Asignar Rol de CLIENTE Automáticamente
+        // Buscamos el rol en la DB, si no existe, lanzamos error o creamos uno por defecto
         Role rolCliente = roleRepository.findByNombre("ROLE_CLIENTE")
                 .orElseThrow(() -> new RuntimeException("Error: Rol de Cliente no encontrado."));
         

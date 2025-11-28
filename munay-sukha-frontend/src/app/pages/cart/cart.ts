@@ -13,14 +13,13 @@ import { Observable } from 'rxjs';
 })
 export class CartComponent implements OnInit {
 
-  // 1. Declaramos la variable pero NO la inicializamos aquí.
-  // El signo '!' le dice a TypeScript: "Tranquilo, esto tendrá valor antes de usarse".
+  // 1. Declaramos la variable sin inicializarla
   cartItems$!: Observable<CartItem[]>; 
 
   constructor(public cartService: CartService) {}
 
   ngOnInit(): void {
-    // 2. Aquí SÍ inicializamos, porque el servicio ya está listo.
+    // 2. Aquí inicializamos la variable dado que el servicio ya se ejecuto
     this.cartItems$ = this.cartService.cart$;
   }
 

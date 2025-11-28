@@ -19,7 +19,7 @@ public class ItemPedido {
     @JsonIgnore
     private Pedido pedido;
 
-    // El producto que se compró (Relación con Producto)
+    // El producto que se compró
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
