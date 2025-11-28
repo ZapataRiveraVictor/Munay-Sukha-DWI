@@ -48,4 +48,14 @@ export class OrderService {
     // @GetMapping public ResponseEntity<List<Pedido>> getAllPedidos() ...
     return this.http.get<any[]>(this.apiUrl, { headers });
   }
+  updateOrderStatus(pedidoId: number, nuevoEstado: string): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+    // Enviamos el estado como query param: ?estado=ENVIADO
+    return this.http.put(`${this.apiUrl}/${pedidoId}/estado`, {}, {
+      headers,
+      params: { estado: nuevoEstado }
+    });
+  }
 }

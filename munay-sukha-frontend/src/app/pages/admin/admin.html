@@ -1,35 +1,81 @@
 <div class="admin-container">
-    <h1>Panel de Administración</h1>
-    <h2>Pedidos Recientes</h2>
+    <div class="header-admin">
+        <h1>Panel de Administración</h1>
+        <button (click)="cargarPedidos()" class="btn-refresh">🔄 Actualizar</button>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Fecha</th>
-                <th>Cliente</th>
-                <th>Total</th>
-                <th>Estado</th>
-                <th>Detalles</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let p of pedidos">
-                <td>#{{ p.id }}</td>
-                <td>{{ p.fechaCreacion | date:'short' }}</td>
-                <td>{{ p.usuario?.nombreCompleto || p.usuario?.email }}</td>
-                <td class="price">S/. {{ p.total }}</td>
-                <td>
-                    <span class="badge" [ngClass]="p.estado">{{ p.estado }}</span>
-                </td>
-                <td>
-                    <button class="btn-view">Ver Items</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div *ngIf="loading">Cargando pedidos...</div>
+    <div *ngIf="errorMensaje" class="error">{{ errorMensaje }}</div>
 
-    <div *ngIf="pedidos.length === 0">
-        <p>No hay pedidos registrados aún.</p>
+    <div class="table-responsive" *ngIf="!loading && pedidos.length > 0">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Detalles</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let p of pedidos">
+
+                <tr [class.expanded]="expandedPedidoId === p.id">
+                    <td>#{{ p.id }}</td>
+                    <td>{{ p.fechaCreacion | date:'short' }}</td>
+                    <td>
+                        <div class="client-info">
+                            <strong>{{ p.usuario?.nombreCompleto }}</strong>
+                            <small>{{ p.usuario?.email }}</small>
+                        </div>
+                    </td>
+                    <td class="price">S/. {{ p.total }}</td>
+
+                    <td>
+                        <select [ngModel]="p.estado" (ngModelChange)="cambiarEstado(p, $event)" [ngClass]="p.estado">
+                            <option *ngFor="let estado of estadosPosibles" [value]="estado">
+                                {{ estado }}
+                            </option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <button class="btn-view" (click)="toggleDetalles(p.id)">
+                            {{ expandedPedidoId === p.id ? 'Ocultar' : 'Ver Items' }}
+                        </button>
+                    </td>
+                </tr>
+
+                <tr *ngIf="expandedPedidoId === p.id" class="details-row">
+                    <td colspan="6">
+                        <div class="order-details">
+                            <h4>Detalle del Pedido #{{ p.id }}</h4>
+                            <p><strong>Dirección:</strong> {{ p.direccionEnvio }} - {{ p.ciudad }}</p>
+
+                            <table class="inner-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>P. Unitario</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of p.items">
+                                        <td>{{ item.producto.nombre }}</td>
+                                        <td>{{ item.cantidad }}</td>
+                                        <td>S/. {{ item.precioUnitario }}</td>
+                                        <td>S/. {{ item.precioUnitario * item.cantidad }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
     </div>
 </div>
