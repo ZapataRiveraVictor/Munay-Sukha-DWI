@@ -33,6 +33,9 @@ public class ProductoService {
         if (producto.getPrecio() <= 0) {
             throw new IllegalArgumentException("El precio debe ser positivo.");
         }
+        if (producto.getId() != null && producto.getId() == 0) {
+            producto.setId(null);
+        }
         return productoRepository.save(producto);
     }
 
