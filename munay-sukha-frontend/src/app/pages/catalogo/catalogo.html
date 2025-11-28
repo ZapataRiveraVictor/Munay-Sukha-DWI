@@ -17,24 +17,37 @@
 
     <div class="product-grid" *ngIf="!loading && paginatedProducts.length > 0">
         <div class="card" *ngFor="let p of paginatedProducts">
-            <div class="card-img">
-                <img [src]="p.urlImagen" [alt]="p.nombre" onerror="this.src='https://via.placeholder.com/150'">
-            </div>
-            <div class="card-body">
-                <span class="badge" [ngClass]="p.categoria">{{ p.categoria }}</span>
-                <h3>{{ p.nombre }}</h3>
-                <p class="desc">{{ p.descripcion }}</p>
-                <div class="row">
-                    <span class="price">S/. {{ p.precio }}</span>
-                    <span class="stock" *ngIf="p.stock > 0">Stock: {{ p.stock }}</span>
-                    <span class="no-stock" *ngIf="p.stock === 0">Agotado</span>
+
+            <div class="clickable-area" (click)="openModal(p)">
+                <div class="card-img">
+                    <img [src]="p.urlImagen" [alt]="p.nombre" onerror="this.src='https://via.placeholder.com/150'">
                 </div>
+
+                <div class="card-body">
+                    <span class="badge" [ngClass]="p.categoria">{{ p.categoria }}</span>
+                    <h3>{{ p.nombre }}</h3>
+                    <p class="desc">{{ p.descripcion }}</p>
+
+                    <div class="spacer"></div>
+                    <div class="row">
+                        <span class="price">S/. {{ p.precio }}</span>
+                        <span class="stock" *ngIf="p.stock > 0">Stock: {{ p.stock }}</span>
+                        <span class="no-stock" *ngIf="p.stock === 0">Agotado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-action">
                 <button class="btn-add" [disabled]="p.stock === 0" (click)="agregarAlCarrito(p)">
-                    Agregar
+                    Agregar al Carrito
                 </button>
             </div>
+
         </div>
     </div>
+
+    <app-product-detail *ngIf="selectedProduct" [product]="selectedProduct" (close)="closeModal()">
+    </app-product-detail>
 
     <div *ngIf="!loading && paginatedProducts.length === 0" class="empty">
         <p>No se encontraron productos en esta categoría.</p>

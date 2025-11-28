@@ -2,11 +2,12 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService, Producto } from '../../services/product';
 import { CartService } from '../../services/cart';
+import { ProductDetailComponent } from '../../components/product-detail/product-detail';
 
 @Component({
   selector: 'app-catalogo',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProductDetailComponent],
   templateUrl: './catalogo.html',
   styleUrl: './catalogo.scss'
 })
@@ -14,11 +15,7 @@ export class CatalogoComponent implements OnInit {
 
   // Datos crudos del backend
   allProducts: Producto[] = [];
-
-  // Datos filtrados por categoría
   filteredProducts: Producto[] = [];
-
-  // Datos que se ven en la página actual (Paginados)
   paginatedProducts: Producto[] = [];
 
   // Configuración
@@ -29,6 +26,8 @@ export class CatalogoComponent implements OnInit {
   pagesArray: number[] = []; // Para dibujar los botoncitos [1, 2, 3]
 
   loading: boolean = true;
+
+  selectedProduct: Producto | null = null;
 
   constructor(
     private productService: ProductService,
@@ -96,7 +95,14 @@ export class CatalogoComponent implements OnInit {
     }
   }
 
-  // Acción del carrito
+  openModal(producto: Producto) {
+    this.selectedProduct = producto;
+  }
+
+  closeModal() {
+    this.selectedProduct = null;
+  }
+
   agregarAlCarrito(producto: Producto) {
     this.cartService.addToCart(producto);
     alert('Producto agregado al carrito');

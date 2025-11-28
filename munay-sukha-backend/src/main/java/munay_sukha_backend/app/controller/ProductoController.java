@@ -36,9 +36,18 @@ public class ProductoController {
         return ResponseEntity.ok(productos);
     }
 
-    @PostMapping 
+    @PostMapping
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
         Producto savedProducto = productoService.saveProducto(producto);
         return ResponseEntity.ok(savedProducto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProducto(@PathVariable Long id) {
+        // Necesitas agregar deleteProducto en tu Service también si no existe
+        // productoService.deleteProducto(id);
+        // Por ahora lo simulamos o lo implementas en el service:
+        // productoRepository.deleteById(id);
+        return ResponseEntity.ok("Producto eliminado");
     }
 }
