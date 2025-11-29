@@ -1,19 +1,21 @@
 package munay_sukha_backend.app.security.jwt;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
-import munay_sukha_backend.app.service.impl.UserDetailsImpl;
-
 import java.security.Key;
 import java.util.Date;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import munay_sukha_backend.app.service.impl.UserDetailsImpl;
 
 @Component
 public class JwtUtils {
 
     // Usamos una clave generada segura para evitar errores de Base64
-    // Nota: Al reiniciar el servidor, los tokens antiguos dejarán de funcionar (es normal en desarrollo)
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     private final int jwtExpirationMs = 86400000; // 24 horas
@@ -39,7 +41,7 @@ public class JwtUtils {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authToken);
             return true;
         } catch (JwtException e) {
-            // Token inválido
+            
         }
         return false;
     }
