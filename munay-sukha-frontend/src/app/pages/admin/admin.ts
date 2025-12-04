@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order';
 import { ProductService, Producto } from '../../services/product';
 import { AuthService } from '../../services/auth';
+import { ImageUploadService } from '../../services/image-upload';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,6 +30,7 @@ export class AdminComponent implements OnInit {
   productos: Producto[] = [];
   showModal: boolean = false;
 
+
   newProduct: Producto = {
     id: 0,
     nombre: '',
@@ -39,9 +41,13 @@ export class AdminComponent implements OnInit {
     urlImagen: ''
   };
 
+  // 2. NUEVA VARIABLE DE ESTADO
+  uploading: boolean = false;
+
   constructor(
     private orderService: OrderService,
     private productService: ProductService,
+    private imageService: ImageUploadService,
     private authService: AuthService,
     private router: Router,
     private cd: ChangeDetectorRef
@@ -107,6 +113,7 @@ export class AdminComponent implements OnInit {
   openProductModal() {
     this.showModal = true;
     this.newProduct = { id: 0, nombre: '', descripcion: '', precio: 0, stock: 0, categoria: 'MUNAY', urlImagen: '' };
+    this.uploading = false;
   }
   openEditModal(producto: Producto) {
     this.showModal = true;
@@ -118,6 +125,28 @@ export class AdminComponent implements OnInit {
     this.newProduct = { id: 0, nombre: '', descripcion: '', precio: 0, stock: 0, categoria: 'MUNAY', urlImagen: '' };
   }
 
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.uploading = true; // Activar spinner o texto de carga
+
+      this.imageService.uploadImage(file).subscribe({
+        next: (response) => {
+          // ImgBB devuelve la url en response.data.url
+          this.newProduct.urlImagen = response.data.url;
+          this.uploading = false;
+          this.cd.detectChanges(); // Forzar actualización visual
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Error al subir la imagen. Intenta con otra más ligera.');
+          this.uploading = false;
+        }
+      });
+    }
+  }
+
   saveProduct() {
     if (this.newProduct.id && this.newProduct.id > 0) {
 
@@ -125,7 +154,7 @@ export class AdminComponent implements OnInit {
         next: () => {
           alert('Producto actualizado correctamente');
           this.closeProductModal();
-          this.loadData(); 
+          this.loadData();
         },
         error: () => alert('Error al actualizar producto')
       });

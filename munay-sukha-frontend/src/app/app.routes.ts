@@ -7,6 +7,7 @@ import { AdminComponent } from './pages/admin/admin';
 import { RegisterComponent } from './pages/register/register';
 import { CatalogoComponent } from './pages/catalogo/catalogo';
 import { BienestarComponent } from './pages/bienestar/bienestar';
+import { MyOrdersComponent } from './pages/my-orders/my-orders';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Ruta raíz
@@ -14,8 +15,9 @@ export const routes: Routes = [
   { path: 'carrito', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'admin', component: AdminComponent },
-  { path: 'register', component: RegisterComponent},
+  { path: 'register', component: RegisterComponent },
   { path: 'catalogo', component: CatalogoComponent },
-  { path: 'bienestar', component: BienestarComponent},
-  { path: '**', redirectTo: '' } 
+  { path: 'bienestar', component: BienestarComponent },
+  { path: 'mis-pedidos', component: MyOrdersComponent },
+  { path: '**', redirectTo: '' }
 ];

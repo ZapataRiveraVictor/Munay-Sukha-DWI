@@ -163,18 +163,32 @@
             </div>
 
             <div class="form-group">
-                <label>URL Imagen</label>
-                <input type="text" [(ngModel)]="newProduct.urlImagen" name="urlImagen" placeholder="https://...">
+                <label>Imagen del Producto</label>
+
+                <input type="file" (change)="onFileSelected($event)" accept="image/*" [disabled]="uploading">
+
+                <p *ngIf="uploading" style="color: #e65100; font-weight: bold; margin-top: 5px;">
+                    ⏳ Subiendo imagen a la nube...
+                </p>
+
+                <div *ngIf="newProduct.urlImagen" class="image-preview">
+                    <img [src]="newProduct.urlImagen" alt="Vista previa">
+                    <p class="url-text">URL generada correctamente ✅</p>
+                </div>
+
+                <input type="hidden" [(ngModel)]="newProduct.urlImagen" name="urlImagen" required>
             </div>
 
             <div class="form-group">
                 <label>Descripción</label>
                 <textarea [(ngModel)]="newProduct.descripcion" name="descripcion" rows="3"></textarea>
             </div>
-
+            
             <div class="modal-actions">
                 <button type="button" class="btn-cancel" (click)="closeProductModal()">Cancelar</button>
-                <button type="submit" class="btn-save">Guardar Producto</button>
+                <button type="submit" class="btn-save" [disabled]="uploading">
+                    {{ uploading ? 'Espere...' : 'Guardar Producto' }}
+                </button>
             </div>
 
         </form>

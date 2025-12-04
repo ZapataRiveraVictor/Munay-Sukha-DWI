@@ -9,7 +9,7 @@ import { CartService, CartItem } from './cart';
 })
 export class OrderService {
 
-  private apiUrl = '/api/pedidos'; 
+  private apiUrl = '/api/pedidos';
 
   constructor(
     private http: HttpClient,
@@ -25,7 +25,7 @@ export class OrderService {
 
     // 1. Convertimos el carrito a un formato simple 
     const itemsSimples = this.cartService.getItems().map(item => ({
-      productoId: item.producto.id, 
+      productoId: item.producto.id,
       cantidad: item.cantidad
     }));
 
@@ -54,5 +54,12 @@ export class OrderService {
       headers,
       params: { estado: nuevoEstado }
     });
+  }
+  // Obtener historial del usuario logueado
+  getMyOrders(): Observable<any[]> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+    return this.http.get<any[]>(`${this.apiUrl}/mis-pedidos`, { headers });
   }
 }

@@ -63,10 +63,22 @@ public class PedidoController {
         }
     }
 
-    // GET: /api/pedidos (RUTA PROTEGIDA: Solo para ADMIN - configurado en SecurityConfig)
+    // GET: /api/pedidos (RUTA PROTEGIDA: Solo para ADMIN - configurado en
+    // SecurityConfig)
     @GetMapping
     public ResponseEntity<List<Pedido>> getAllPedidos() {
         return ResponseEntity.ok(pedidoService.findAll());
+    }
+
+    // GET: /api/pedidos/mis-pedidos
+    @GetMapping("/mis-pedidos")
+    public ResponseEntity<List<Pedido>> getMisPedidos(@AuthenticationPrincipal UserDetails userDetails) {
+        // 1. Buscamos al usuario que está logueado
+        Usuario usuario = usuarioRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // 2. Devolvemos SOLO sus pedidos
+        return ResponseEntity.ok(pedidoService.getPedidosByUsuario(usuario));
     }
 
     // PUT: /api/pedidos/{id}/estado (RUTA PROTEGIDA: Solo para ADMIN)

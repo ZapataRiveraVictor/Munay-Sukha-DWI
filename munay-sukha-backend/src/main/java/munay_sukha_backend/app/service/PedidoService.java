@@ -20,7 +20,8 @@ public class PedidoService {
         this.productoRepository = productoRepository;
     }
 
-    // La anotación @Transactional asegura que toda la operación se complete o se revierta (rollback)
+    // La anotación @Transactional asegura que toda la operación se complete o se
+    // revierta (rollback)
     @Transactional
     public Pedido crearPedido(Usuario usuario, Pedido nuevoPedido, List<ItemPedido> items) throws Exception {
 
@@ -75,4 +76,10 @@ public class PedidoService {
     public List<Pedido> findAll() {
         return pedidoRepository.findAll();
     }
+
+    // Obtener pedidos de un usuario específico
+    public List<Pedido> getPedidosByUsuario(Usuario usuario) {
+        return pedidoRepository.findByUsuarioOrderByFechaCreacionDesc(usuario);
+    }
+
 }
